@@ -1,26 +1,1510 @@
-@import "tailwindcss";
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+/* Copied from /Volumes/M2 SSD/DEV/arco new interface/src/css/style.css */
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --md-sys-color-primary: #3b82f6;
+  --md-sys-color-on-primary: #ffffff;
+  --md-sys-color-primary-container: #2563eb;
+  --md-sys-color-on-primary-container: #ffffff;
+  --md-sys-color-secondary: #a0a0a5;
+  --md-sys-color-on-secondary: #1f1f23;
+  --md-sys-color-secondary-container: #2d2d32;
+  --md-sys-color-on-secondary-container: #e0e0e5;
+  --md-sys-color-tertiary: #efb8c8;
+  --md-sys-color-on-tertiary: #492532;
+  --md-sys-color-surface: #1c1c21;
+  --md-sys-color-surface-variant: #222226;
+  --md-sys-color-on-surface: #e0e0e5;
+  --md-sys-color-on-surface-variant: #9a9aa0;
+  --md-sys-color-outline: #303035;
+  --md-sys-color-outline-variant: #2a2a2f;
+  --md-sys-color-background: #303134;
+  --md-sys-color-on-background: #e0e0e5;
+  --md-sys-color-surface-container: #242428;
+  --md-sys-color-surface-container-high: #2d2d32;
+  --md-sys-color-surface-container-highest: #38383d;
+  --md-sys-color-surface-bright: #44444a;
+  --md-sys-color-surface-dim: #141418;
+  --md-sys-elevation-1: 0 1px 3px rgba(0, 0, 0, 0.5);
+  --md-sys-elevation-2: 0 2px 6px rgba(0, 0, 0, 0.6);
+  --md-sys-elevation-3: 0 4px 8px rgba(0, 0, 0, 0.7);
+  --md-sys-elevation-4: 0 6px 10px rgba(0, 0, 0, 0.8);
+  --md-sys-elevation-5: 0 8px 12px rgba(0, 0, 0, 0.9);
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family:
+    'Inter',
+    -apple-system,
+    BlinkMacSystemFont,
+    sans-serif;
+  background-color: #303134;
+  color: var(--md-sys-color-on-background);
+  line-height: 1.6;
+  overflow-x: hidden;
+}
+
+.app-container {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  background: #303134;
+  padding: 0 12px 12px;
+  gap: 12px;
+}
+
+/* Header */
+.header {
+  background: transparent;
+  border-bottom: none;
+  box-shadow: none;
+  padding: 1rem 2rem;
+  display: grid;
+  grid-template-columns: 1fr 60% 1fr;
+  align-items: center;
+  height: 64px;
+  z-index: 1000;
+}
+
+/* Sleek wordmark logo */
+.logo {
+  font-family: 'Inter', sans-serif;
+  font-weight: 800;
+  font-size: 1.6rem;
+  letter-spacing: -0.5px;
+  color: var(--md-sys-color-on-surface);
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.logo:hover {
+  color: var(--md-sys-color-primary);
+}
+
+.logo i {
+  font-size: 2rem;
+}
+
+/* Enhanced Search Bar */
+.search-container {
+  width: 100%;
+  grid-column: 2;
+  justify-self: center;
+}
+
+.search-wrapper {
+  position: relative;
+  background: var(--md-sys-color-surface-container);
+  border: 1px solid var(--md-sys-color-outline-variant);
+  border-radius: 28px;
+  overflow: hidden;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  width: 100%;
+}
+
+.search-wrapper:hover {
+  border-color: var(--md-sys-color-outline);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+.search-wrapper:focus-within {
+  border-color: var(--md-sys-color-primary);
+  box-shadow:
+    0 0 0 2px rgba(187, 134, 252, 0.2),
+    0 4px 12px rgba(0, 0, 0, 0.2);
+  background: var(--md-sys-color-surface-container-high);
+}
+
+.search-input-container {
+  display: flex;
+  align-items: center;
+  padding: 0 20px;
+  gap: 12px;
+  height: 48px;
+}
+
+.search-icon {
+  color: var(--md-sys-color-on-surface-variant);
+  font-size: 18px;
+  opacity: 0.7;
+  transition: all 0.25s ease;
+  flex-shrink: 0;
+}
+
+.search-wrapper:focus-within .search-icon {
+  color: var(--md-sys-color-primary);
+  opacity: 1;
+}
+
+.search-input {
+  flex: 1;
+  background: none;
+  border: none;
+  outline: none;
+  color: var(--md-sys-color-on-surface);
+  font-size: 16px;
+  font-family: inherit;
+  font-weight: 400;
+  line-height: 1.5;
+  height: 100%;
+}
+
+.search-input::placeholder {
+  color: var(--md-sys-color-on-surface-variant);
+  opacity: 0.7;
+  font-weight: 400;
+}
+
+.search-btn {
+  background: transparent;
+  border: none;
+  border-radius: 20px;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  color: var(--md-sys-color-on-surface-variant);
+  opacity: 0;
+  transform: scale(0.8);
+  flex-shrink: 0;
+}
+
+.search-wrapper:focus-within .search-btn,
+.search-input:not(:placeholder-shown) + .search-btn {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.search-btn:hover {
+  background: var(--md-sys-color-primary);
+  color: var(--md-sys-color-on-primary);
+  transform: scale(1.05);
+}
+
+.search-btn:active {
+  transform: scale(0.95);
+}
+
+.search-btn i {
+  font-size: 14px;
+}
+
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-left: auto;
+}
+
+.icon-btn {
+  background: none;
+  border: none;
+  border-radius: 50%;
+  width: 48px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  color: var(--md-sys-color-on-surface-variant);
+}
+
+.icon-btn:hover {
+  background: var(--md-sys-color-surface-container-high);
+  color: var(--md-sys-color-on-surface);
+}
+
+/* Main Content */
+.main-content {
+  display: flex;
+  flex: 1;
+  overflow: hidden; /* This is for the container of left-sidebar, main-sheet-music, right-sidebar */
+  gap: 12px;
+}
+
+/* Styling for the scrollable area within the main content where etudes are shown */
+#mainContent {
+  flex: 1;
+  overflow-y: auto; /* Make this area scrollable */
+  padding: 1.5rem; /* Match sidebar-content padding or adjust as needed */
+  scrollbar-width: thin; /* For Firefox */
+  scrollbar-color: var(--md-sys-color-outline-variant) transparent; /* For Firefox */
+}
+
+/* Webkit scrollbar styling for #mainContent */
+#mainContent::-webkit-scrollbar {
+  width: 6px;
+}
+
+#mainContent::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+#mainContent::-webkit-scrollbar-thumb {
+  background: var(--md-sys-color-outline-variant);
+  border-radius: 3px;
+  opacity: 0.6;
+}
+
+#mainContent::-webkit-scrollbar-thumb:hover {
+  background: var(--md-sys-color-outline);
+  opacity: 0.8;
+}
+
+/* Hide scrollbar when not hovered for #mainContent */
+#mainContent::-webkit-scrollbar {
+  width: 0px; /* Initially hidden */
+  transition: width 0.3s ease;
+}
+
+#mainContent:hover::-webkit-scrollbar {
+  width: 6px; /* Show on #mainContent hover */
+}
+
+/* Sidebar Base Styles */
+.sidebar {
+  background: var(--md-sys-color-surface-container);
+  border-right: none;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  box-shadow: var(--md-sys-elevation-1);
+}
+
+.sidebar.minimized {
+  width: 0 !important;
+  min-width: 0 !important;
+  overflow: hidden;
+  border-right: none;
+}
+
+.sidebar-header {
+  padding: 1.5rem;
+  border-bottom: 1px solid var(--md-sys-color-outline-variant);
+  background: transparent;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.sidebar-title {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--md-sys-color-on-surface);
+}
+
+.minimize-btn {
+  background: none;
+  border: none;
+  border-radius: 50%;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  color: var(--md-sys-color-on-surface-variant);
+}
+
+.minimize-btn:hover {
+  background: var(--md-sys-color-surface-container-highest);
+  color: var(--md-sys-color-on-surface);
+}
+
+.sidebar-content {
+  flex: 1;
+  overflow-y: auto;
+  padding: 1rem;
+  scrollbar-width: thin;
+  scrollbar-color: var(--md-sys-color-outline-variant) transparent;
+}
+
+/* Webkit scrollbar styling for sidebar */
+.sidebar-content::-webkit-scrollbar {
+  width: 6px;
+}
+
+.sidebar-content::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.sidebar-content::-webkit-scrollbar-thumb {
+  background: var(--md-sys-color-outline-variant);
+  border-radius: 3px;
+  opacity: 0.6;
+}
+
+.sidebar-content::-webkit-scrollbar-thumb:hover {
+  background: var(--md-sys-color-outline);
+  opacity: 0.8;
+}
+
+/* Hide scrollbar when not hovered */
+.sidebar-content::-webkit-scrollbar {
+  width: 0px;
+  transition: width 0.3s ease;
+}
+
+.sidebar:hover .sidebar-content::-webkit-scrollbar {
+  width: 6px;
+}
+
+/* Left Sidebar */
+.left-sidebar {
+  width: 20%;
+  min-width: 280px;
+  margin-top: 0;
+}
+
+/* Top-level accordion titles (e.g., 'Techniques', 'Composers') */
+.section-header .section-title {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--md-sys-color-on-surface);
+  text-transform: none;
+  letter-spacing: normal;
+}
+
+.technique-section {
+  /* Spacing between sub-category groups */
+  margin-bottom: 2rem;
+}
+
+.technique-section:last-child {
+  margin-bottom: 0;
+}
+
+/* Sub-category titles (e.g., 'Bowing Techniques') */
+.technique-section .section-title {
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: var(--md-sys-color-on-surface-variant);
+  padding: 0.75rem 0;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: color 0.2s ease;
+  border-bottom: 1px solid transparent; /* For hover effect */
+}
+
+.technique-section .section-title:hover {
+  color: var(--md-sys-color-primary);
+  border-bottom-color: var(--md-sys-color-primary-container);
+}
+
+.technique-section .section-title .icon {
+  transition: transform 0.3s ease;
+  font-size: 0.8rem;
+}
+
+.technique-section .section-title.active .icon {
+  transform: rotate(90deg);
+}
+
+.technique-list {
+  list-style: none;
+  padding-left: 0.5rem; /* Indent items slightly */
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.technique-list.open {
+  max-height: 1000px; /* Adjust as needed, should be larger than any possible content height */
+}
+
+.technique-item {
+  padding: 0.6rem 0.5rem;
+  cursor: pointer;
+  border-radius: 8px;
+  transition: all 0.2s ease;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: var(--md-sys-color-on-surface-variant);
+  font-size: 0.9rem;
+}
+
+.technique-item:hover {
+  background-color: var(--md-sys-color-surface-container-high);
+  color: var(--md-sys-color-on-surface);
+}
+
+.technique-item.selected {
+  background-color: var(--md-sys-color-primary-container);
+  color: var(--md-sys-color-on-primary-container);
+  font-weight: 500;
+}
+
+.technique-item .count {
+  font-size: 0.8rem;
+  color: var(--md-sys-color-on-surface-variant);
+  background-color: var(--md-sys-color-surface-container-highest);
+  padding: 0.1rem 0.4rem;
+  border-radius: 6px;
+}
+
+.technique-item.selected .count {
+  color: var(--md-sys-color-on-primary-container);
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
+/* Composer List Styles */
+.composer-list {
+  list-style: none;
+  padding-left: 0; /* Composers are top-level */
+}
+
+.composer-item {
+  padding: 0.75rem 0.5rem;
+  cursor: pointer;
+  border-radius: 8px;
+  transition: all 0.2s ease;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: var(--md-sys-color-on-surface-variant);
+  font-size: 0.95rem;
+}
+
+.composer-item:hover {
+  background-color: var(--md-sys-color-surface-container-high);
+  color: var(--md-sys-color-on-surface);
+}
+
+.composer-item.selected {
+  background-color: var(--md-sys-color-primary-container);
+  color: var(--md-sys-color-on-primary-container);
+  font-weight: 500;
+}
+
+.composer-item .count {
+  font-size: 0.8rem;
+  color: var(--md-sys-color-on-surface-variant);
+  background-color: var(--md-sys-color-surface-container-highest);
+  padding: 0.1rem 0.4rem;
+  border-radius: 6px;
+}
+
+.composer-item.selected .count {
+  color: var(--md-sys-color-on-primary-container);
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
+/* Filter Controls */
+.filter-controls {
+  padding: 1rem;
+  border-top: 1px solid var(--md-sys-color-outline-variant);
+  background: transparent;
+  display: flex;
+  gap: 0.5rem;
+}
+
+.filter-btn {
+  flex: 1;
+  padding: 0.75rem;
+  border: 1px solid var(--md-sys-color-outline);
+  border-radius: 20px;
+  background: var(--md-sys-color-surface-container-high);
+  color: var(--md-sys-color-on-surface-variant);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+.filter-btn:hover {
+  border-color: var(--md-sys-color-primary);
+  background: var(--md-sys-color-primary-container);
+  color: var(--md-sys-color-on-primary-container);
+}
+
+.filter-btn.active {
+  background: var(--md-sys-color-primary);
+  color: var(--md-sys-color-on-primary);
+  border-color: var(--md-sys-color-primary);
+}
+
+.clear-filters-btn {
+  background: transparent;
+  border: none;
+  color: inherit;
+  cursor: pointer;
+  font-size: 1.5rem;
+  opacity: 0.7;
+  transition: opacity 0.2s ease;
+}
+
+.clear-filters-btn:hover {
+  opacity: 1;
+  color: var(--md-sys-color-primary);
+}
+
+/* Sheet Music Grid */
+.sheet-music-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1.5rem;
+  padding: 0rem; /* No padding here, #mainContent has it */
+}
+
+.sheet-item {
+  background: var(--md-sys-color-surface-container);
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: var(--md-sys-elevation-1);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+}
+
+.sheet-item:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--md-sys-elevation-3);
+}
+
+.sheet-thumbnail {
+  width: 100%;
+  height: 180px; /* Adjust as needed */
+  background-color: var(--md-sys-color-surface-container-high);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.sheet-thumbnail img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* Or 'contain' if you prefer */
+}
+
+.sheet-thumbnail .placeholder-icon {
+  font-size: 3rem;
+  color: var(--md-sys-color-on-surface-variant);
+  opacity: 0.5;
+}
+
+.sheet-info {
+  padding: 1rem;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.sheet-title {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--md-sys-color-on-surface);
+  margin-bottom: 0.25rem;
+  line-height: 1.3;
+}
+
+.sheet-composer {
+  font-size: 0.9rem;
+  color: var(--md-sys-color-on-surface-variant);
+  margin-bottom: 0.75rem;
+}
+
+.sheet-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: auto; /* Pushes tags to the bottom */
+}
+
+.tag {
+  background-color: var(--md-sys-color-secondary-container);
+  color: var(--md-sys-color-on-secondary-container);
+  padding: 0.25rem 0.6rem;
+  border-radius: 12px;
+  font-size: 0.75rem;
+  font-weight: 500;
+}
+
+.sheet-difficulty {
+  font-size: 0.75rem;
+  font-weight: 500;
+  padding: 0.25rem 0.6rem;
+  border-radius: 12px;
+  margin-left: auto; /* Aligns to the right if space allows */
+}
+
+.sheet-item[data-difficulty='Beginner'] .sheet-difficulty {
+  background-color: #dcfce7; /* Light Green */
+  color: #166534; /* Dark Green */
+}
+
+.sheet-item[data-difficulty='Intermediate'] .sheet-difficulty {
+  background-color: #fef9c3; /* Light Yellow */
+  color: #713f12; /* Dark Yellow */
+}
+
+.sheet-item[data-difficulty='Advanced'] .sheet-difficulty {
+  background-color: var(--md-sys-color-primary-container);
+  color: var(--md-sys-color-on-primary-container);
+}
+
+/* PDF Viewer Modal */
+.pdf-viewer-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.85);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2000;
+  opacity: 0;
+  visibility: hidden;
+  transition:
+    opacity 0.3s ease,
+    visibility 0s 0.3s linear;
+}
+
+.pdf-viewer-modal.open {
+  opacity: 1;
+  visibility: visible;
+  transition-delay: 0s;
+}
+
+.pdf-viewer-container {
+  background: var(--md-sys-color-surface);
+  width: 90%;
+  max-width: 1200px;
+  height: 90vh;
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  transform: scale(0.95);
+  transition: transform 0.3s ease;
+}
+
+.pdf-viewer-modal.open .pdf-viewer-container {
+  transform: scale(1);
+}
+
+.pdf-viewer-header {
+  padding: 0.75rem 1.5rem;
+  background: var(--md-sys-color-surface-container-high);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid var(--md-sys-color-outline-variant);
+}
+
+.pdf-viewer-title {
+  font-size: 1.1rem;
+  font-weight: 500;
+  color: var(--md-sys-color-on-surface);
+}
+
+.pdf-viewer-controls {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.pdf-viewer-controls .icon-btn {
+  width: 40px;
+  height: 40px;
+  font-size: 1.1rem;
+}
+
+#page-num,
+#page-count {
+  font-size: 0.9rem;
+  color: var(--md-sys-color-on-surface-variant);
+  margin: 0 0.5rem;
+}
+
+.pdf-viewer-body {
+  flex: 1;
+  overflow: auto;
+  background-color: var(
+    --md-sys-color-surface-dim
+  ); /* Darker background for PDF canvas */
+  display: flex;
+  justify-content: center;
+  padding: 1rem;
+}
+
+#pdf-canvas {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+}
+
+/* Right Sidebar (Chat Interface) */
+.right-sidebar {
+  width: 25%;
+  min-width: 320px;
+  border-left: 1px solid var(--md-sys-color-outline-variant);
+  display: flex;
+  flex-direction: column;
+  background: var(--md-sys-color-surface-container);
+  transition:
+    width 0.3s ease,
+    min-width 0.3s ease;
+}
+
+.right-sidebar.minimized {
+  width: 60px !important; /* Adjust as needed for minimized icon view */
+  min-width: 60px !important;
+}
+
+.right-sidebar.minimized .chat-header-content,
+.right-sidebar.minimized .chat-messages,
+.right-sidebar.minimized .chat-input-wrapper {
+  display: none;
+}
+
+.right-sidebar.minimized .chat-header {
+  justify-content: center;
+  padding: 1rem 0;
+}
+
+.right-sidebar.minimized .minimize-chat-btn {
+  /* Optionally hide or change icon when minimized */
+}
+
+.chat-header {
+  padding: 1rem 1.5rem;
+  border-bottom: 1px solid var(--md-sys-color-outline-variant);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: transparent;
+}
+
+.chat-title {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--md-sys-color-on-surface);
+}
+
+.chat-actions .icon-btn {
+  width: 36px;
+  height: 36px;
+  font-size: 1rem;
+}
+
+.chat-messages {
+  flex: 1;
+  padding: 1rem;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  scrollbar-width: thin;
+  scrollbar-color: var(--md-sys-color-outline-variant) transparent;
+}
+
+.chat-messages::-webkit-scrollbar {
+  width: 6px;
+}
+
+.chat-messages::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.chat-messages::-webkit-scrollbar-thumb {
+  background: var(--md-sys-color-outline-variant);
+  border-radius: 3px;
+}
+
+.chat-message {
+  padding: 0.75rem 1rem;
+  border-radius: 12px;
+  max-width: 85%;
+  line-height: 1.5;
+  font-size: 0.95rem;
+  word-wrap: break-word;
+  animation: slideInUp 0.3s ease-out;
+}
+
+.chat-message.user {
+  background: var(--md-sys-color-primary-container);
+  color: var(--md-sys-color-on-primary-container);
+  align-self: flex-end;
+  border-bottom-right-radius: 4px;
+}
+
+.chat-message.bot {
+  background: var(--md-sys-color-secondary-container);
+  color: var(--md-sys-color-on-secondary-container);
+  align-self: flex-start;
+  border-bottom-left-radius: 4px;
+}
+
+.chat-message.error {
+  background: #b00020; /* Material Error Color */
+  color: white;
+  align-self: flex-start;
+  border-bottom-left-radius: 4px;
+}
+
+.chat-message p:last-child {
+  margin-bottom: 0;
+}
+
+.chat-message strong {
+  font-weight: 600;
+}
+
+.chat-input-wrapper {
+  padding: 1rem;
+  border-top: 1px solid var(--md-sys-color-outline-variant);
+  background: transparent;
+  transition: height 0.2s ease;
+}
+
+.chat-input-container {
+  position: relative;
+  display: flex;
+  align-items: flex-end; /* Align items to bottom for multi-line textarea */
+  background: var(--md-sys-color-surface-container-high);
+  border: 1px solid var(--md-sys-color-outline);
+  border-radius: 24px; /* Rounded corners */
+  padding: 0.5rem 0.75rem;
+  transition: all 0.2s ease;
+}
+
+.chat-input-container:focus-within {
+  border-color: var(--md-sys-color-primary);
+  box-shadow: 0 0 0 2px rgba(187, 134, 252, 0.2);
+}
+
+#chat-input {
+  flex: 1;
+  background: none;
+  border: none;
+  outline: none;
+  color: var(--md-sys-color-on-surface);
+  font-size: 1rem;
+  resize: none; /* Disable manual resize */
+  overflow-y: auto; /* Scroll for long input, but auto-resize handles height */
+  min-height: 24px; /* Minimum height for single line */
+  max-height: 120px; /* Maximum height before scrolling */
+  line-height: 1.5;
+  padding: 0.25rem 0.5rem; /* Padding inside textarea */
+  font-family: inherit;
+}
+
+.chat-send-btn {
+  background: var(--md-sys-color-primary);
+  border: none;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  color: var(--md-sys-color-on-primary);
+  margin-left: 0.5rem;
+  flex-shrink: 0; /* Prevent button from shrinking */
+}
+
+.chat-send-btn:hover {
+  background: var(--md-sys-color-primary-container);
+  color: var(--md-sys-color-on-primary-container);
+}
+
+.chat-send-btn:disabled {
+  background: var(--md-sys-color-outline-variant);
+  color: var(--md-sys-color-on-surface-variant);
+  cursor: not-allowed;
+}
+
+.chat-input-wrapper.expanded .chat-input-container {
+  /* Optional: Adjust container style when textarea expands */
+}
+
+/* Chat History Modal */
+.chat-history-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 3000;
+  opacity: 0;
+  visibility: hidden;
+  transition:
+    opacity 0.3s ease,
+    visibility 0s 0.3s linear;
+}
+
+.chat-history-modal.open {
+  opacity: 1;
+  visibility: visible;
+  transition-delay: 0s;
+}
+
+.chat-history-modal-content {
+  background: var(--md-sys-color-surface-container);
+  width: 60%;
+  max-width: 800px;
+  height: 70vh;
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  transform: scale(0.95);
+  transition: transform 0.3s ease;
+}
+
+.chat-history-modal.open .chat-history-modal-content {
+  transform: scale(1);
+}
+
+.chat-history-header {
+  padding: 1rem 1.5rem;
+  background: var(--md-sys-color-surface-container-high);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid var(--md-sys-color-outline-variant);
+}
+
+.chat-history-title {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: var(--md-sys-color-on-surface);
+}
+
+.chat-history-body {
+  flex: 1;
+  padding: 1.5rem;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: var(--md-sys-color-outline-variant) transparent;
+}
+
+.chat-history-body::-webkit-scrollbar {
+  width: 8px;
+}
+
+.chat-history-body::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.chat-history-body::-webkit-scrollbar-thumb {
+  background: var(--md-sys-color-outline-variant);
+  border-radius: 4px;
+}
+
+.chat-history-item {
+  margin-bottom: 1rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid var(--md-sys-color-outline);
+}
+
+.chat-history-item:last-child {
+  border-bottom: none;
+  margin-bottom: 0;
+}
+
+.chat-history-timestamp {
+  font-size: 0.8rem;
+  color: var(--md-sys-color-on-surface-variant);
+  margin-bottom: 0.5rem;
+}
+
+.chat-history-message {
+  font-size: 0.95rem;
+  color: var(--md-sys-color-on-surface);
+  line-height: 1.6;
+}
+
+.chat-history-message.user {
+  font-weight: 500; /* Or some other distinction */
+}
+
+.chat-history-message.bot {
+  /* Style for bot messages if needed */
+}
+
+.chat-history-footer {
+  padding: 1rem 1.5rem;
+  border-top: 1px solid var(--md-sys-color-outline-variant);
+  text-align: right;
+}
+
+.clear-history-btn {
+  padding: 0.6rem 1.2rem;
+  background: var(--md-sys-color-primary-container);
+  color: var(--md-sys-color-on-primary-container);
+  border: none;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  font-weight: 500;
+}
+
+.clear-history-btn:hover {
+  background: var(--md-sys-color-primary);
+}
+
+/* Technique Preview Pane (Placeholder) */
+.technique-preview {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  width: 300px;
+  background: var(--md-sys-color-surface-container-highest);
+  border-radius: 12px;
+  box-shadow: var(--md-sys-elevation-4);
+  padding: 1.5rem;
+  z-index: 1500;
+  opacity: 0;
+  transform: translateY(20px);
+  transition:
+    opacity 0.3s ease,
+    transform 0.3s ease;
+  visibility: hidden;
+}
+
+.technique-preview.visible {
+  opacity: 1;
+  transform: translateY(0);
+  visibility: visible;
+}
+
+.technique-preview-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.technique-preview-title {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: var(--md-sys-color-on-surface);
+}
+
+.technique-preview-close {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  color: var(--md-sys-color-on-surface-variant);
+  cursor: pointer;
+  padding: 0.25rem;
+  line-height: 1;
+}
+
+.technique-preview-close:hover {
+  color: var(--md-sys-color-on-surface);
+}
+
+.technique-preview-content {
+  padding: 2rem;
+  text-align: center;
+  animation: fadeIn 0.3s ease-in-out;
+}
+.technique-preview-content h3 {
+  color: var(--md-sys-color-primary);
+  margin-bottom: 1rem;
+}
+.technique-preview-content p {
+  color: var(--md-sys-color-on-surface-variant);
+  font-size: 1.1rem;
+  line-height: 1.6;
+}
+
+/* Animations */
+@keyframes slideInUp {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Responsive Adjustments */
+@media (max-width: 1200px) {
+  .left-sidebar {
+    min-width: 260px;
+  }
+  .right-sidebar {
+    min-width: 300px;
+  }
+}
+
+@media (max-width: 992px) {
+  .header {
+    grid-template-columns: auto 1fr auto;
+    padding: 1rem;
+  }
+  .search-container {
+    grid-column: 2;
+    padding: 0 1rem;
+  }
+  .logo {
+    grid-column: 1;
+    margin-right: 1rem;
+  }
+  .header-actions {
+    grid-column: 3;
+  }
+  .main-content {
+    flex-direction: column;
+  }
+  .left-sidebar,
+  .right-sidebar {
+    width: 100%;
+    max-height: 40vh; /* Limit height when stacked */
+    border-right: none;
+    border-bottom: 1px solid var(--md-sys-color-outline-variant);
+  }
+  .right-sidebar {
+    border-left: none;
+  }
+  .right-sidebar.minimized {
+    width: 100% !important;
+    height: 60px !important; /* Adjust for horizontal minimized bar */
+    min-height: 60px !important;
+  }
+  .right-sidebar.minimized .chat-header {
+    justify-content: space-between; /* Keep title and button visible */
+    padding: 0 1rem;
+  }
+  .right-sidebar.minimized .chat-header-content {
+    display: block;
+  }
+  #mainContent {
+    padding: 1rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .header {
+    padding: 0.75rem;
+  }
+  .logo {
+    font-size: 1.4rem;
+  }
+  .search-input-container {
+    height: 44px;
+    padding: 0 16px;
+  }
+  .search-input {
+    font-size: 15px;
+  }
+  .icon-btn {
+    width: 44px;
+    height: 44px;
+  }
+  .sheet-music-grid {
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 1rem;
+  }
+  .pdf-viewer-container {
+    width: 95%;
+    height: 85vh;
+  }
+  .chat-history-modal-content {
+    width: 90%;
+    height: 80vh;
+  }
+  .technique-preview {
+    width: calc(100% - 32px);
+    bottom: 16px;
+    left: 16px;
+    right: 16px;
+  }
+}
+
+@media (max-width: 576px) {
+  .app-container {
+    padding: 0 8px 8px;
+    gap: 8px;
+  }
+  .header {
+    height: 56px;
+    padding: 0.5rem;
+  }
+  .logo {
+    font-size: 1.2rem;
+  }
+  .search-container {
+    padding: 0 0.5rem;
+  }
+  .search-input-container {
+    height: 40px;
+    padding: 0 12px;
+    gap: 8px;
+  }
+  .search-icon {
+    font-size: 16px;
+  }
+  .search-input {
+    font-size: 14px;
+  }
+  .search-btn {
+    width: 28px;
+    height: 28px;
+  }
+  .search-btn i {
+    font-size: 12px;
+  }
+  .icon-btn {
+    width: 40px;
+    height: 40px;
+  }
+  .sidebar-header {
+    padding: 1rem;
+  }
+  .sidebar-title {
+    font-size: 1rem;
+  }
+  .minimize-btn {
+    width: 28px;
+    height: 28px;
+  }
+  .sidebar-content {
+    padding: 0.75rem;
+  }
+  .technique-section .section-title {
+    font-size: 0.9rem;
+    padding: 0.6rem 0;
+  }
+  .technique-item,
+  .composer-item {
+    padding: 0.5rem;
+    font-size: 0.85rem;
+  }
+  .filter-controls {
+    padding: 0.75rem;
+  }
+  .filter-btn {
+    padding: 0.6rem;
+    font-size: 0.85rem;
+  }
+  .sheet-music-grid {
+    grid-template-columns: 1fr; /* Single column on very small screens */
+    gap: 0.75rem;
+  }
+  .sheet-thumbnail {
+    height: 150px;
+  }
+  .sheet-info {
+    padding: 0.75rem;
+  }
+  .sheet-title {
+    font-size: 1rem;
+  }
+  .sheet-composer {
+    font-size: 0.85rem;
+  }
+  .tag,
+  .sheet-difficulty {
+    font-size: 0.7rem;
+    padding: 0.2rem 0.5rem;
+  }
+  .pdf-viewer-header {
+    padding: 0.5rem 1rem;
+  }
+  .pdf-viewer-title {
+    font-size: 1rem;
+  }
+  .pdf-viewer-controls .icon-btn {
+    width: 36px;
+    height: 36px;
+    font-size: 1rem;
+  }
+  #page-num,
+  #page-count {
+    font-size: 0.85rem;
+  }
+  .chat-header {
+    padding: 0.75rem 1rem;
+  }
+  .chat-title {
+    font-size: 1rem;
+  }
+  .chat-actions .icon-btn {
+    width: 32px;
+    height: 32px;
+    font-size: 0.9rem;
+  }
+  .chat-messages {
+    padding: 0.75rem;
+    gap: 0.5rem;
+  }
+  .chat-message {
+    padding: 0.6rem 0.8rem;
+    font-size: 0.9rem;
+  }
+  .chat-input-wrapper {
+    padding: 0.75rem;
+  }
+  .chat-input-container {
+    padding: 0.4rem 0.6rem;
+    border-radius: 20px;
+  }
+  #chat-input {
+    font-size: 0.9rem;
+    min-height: 20px;
+    max-height: 100px;
+    padding: 0.2rem 0.4rem;
+  }
+  .chat-send-btn {
+    width: 36px;
+    height: 36px;
+    margin-left: 0.4rem;
+  }
+  .chat-history-header {
+    padding: 0.75rem 1rem;
+  }
+  .chat-history-title {
+    font-size: 1.1rem;
+  }
+  .chat-history-body {
+    padding: 1rem;
+  }
+  .clear-history-btn {
+    padding: 0.5rem 1rem;
+    font-size: 0.9rem;
+  }
+  .technique-preview {
+    padding: 1rem;
+  }
+  .technique-preview-title {
+    font-size: 1.1rem;
+  }
+}
+
+/* Additional specific styles for components if needed */
+
+/* Ensure FontAwesome icons are sized correctly if not using a class that sets font-size */
+.fas,
+.far,
+.fab {
+  font-size: inherit; /* Or a specific size if needed globally */
+  line-height: 1;
+}
+
+/* Styling for the accordion toggle icons */
+.section-toggle {
+  background: none;
+  border: none;
+  color: var(--md-sys-color-on-surface-variant);
+  cursor: pointer;
+  font-size: 1.2rem; /* Ensure it's large enough to click */
+  padding: 0.5rem;
+  transition:
+    transform 0.3s ease,
+    color 0.2s ease;
+}
+
+.section-toggle:hover {
+  color: var(--md-sys-color-primary);
+}
+
+.section-toggle.collapsed .fa-chevron-down {
+  transform: rotate(-90deg);
+}
+
+.section-toggle .fa-chevron-right {
+  /* If you use chevron-right for collapsed state */
+  /* transform: rotate(0deg); */
+}
+
+.section-toggle.expanded .fa-chevron-right {
+  /* transform: rotate(90deg); */
+}
+
+/* Ensure that the Font Awesome CSS is loaded if you're using it */
+/* @import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css'); */
+/* This is better handled in the HTML <head> or via JS import if using a package */
+
+/* Fallback for Inter font if not loaded via <link> or @import */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src:
+    local('Inter Regular'),
+    local('Inter-Regular'),
+    url(https://fonts.gstatic.com/s/inter/v12/UcC73FwrK3iLTeHuS_fvQtMwCp50KnMa1ZL7W0Q5nw.woff2)
+      format('woff2');
+}
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src:
+    local('Inter Medium'),
+    local('Inter-Medium'),
+    url(https://fonts.gstatic.com/s/inter/v12/UcC73FwrK3iLTeHuS_fvQtMwCp50KnMa1ZL7W0Q5nw.woff2)
+      format('woff2'); /* Using same as 400 for example, replace with actual 500 weight */
+}
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src:
+    local('Inter SemiBold'),
+    local('Inter-SemiBold'),
+    url(https://fonts.gstatic.com/s/inter/v12/UcC73FwrK3iLTeHuS_fvQtMwCp50KnMa1ZL7W0Q5nw.woff2)
+      format('woff2'); /* Using same as 400 for example, replace with actual 600 weight */
+}
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 800;
+  font-display: swap;
+  src:
+    local('Inter ExtraBold'),
+    local('Inter-ExtraBold'),
+    url(https://fonts.gstatic.com/s/inter/v12/UcC73FwrK3iLTeHuS_fvQtMwCp50KnMa1ZL7W0Q5nw.woff2)
+      format('woff2'); /* Using same as 400 for example, replace with actual 800 weight */
 }
