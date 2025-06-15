@@ -1,6 +1,9 @@
 import type { Metadata } from 'next';
 import { Geist, Geist_Mono, Inter } from 'next/font/google';
 import './globals.css';
+import Header from '@/components/layout/Header';
+import Sidebar from '@/components/layout/Sidebar';
+import RightSidebar from '@/components/layout/RightSidebar';
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
@@ -34,13 +37,22 @@ export default function RootLayout({
       <head>
         <link
           rel="stylesheet"
+          href="https://fonts.googleapis.com/icon?family=Material+Icons"
+        />
+        <link
+          rel="stylesheet"
           href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css"
         />
       </head>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} ${inter.className} antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} ${inter.className} antialiased flex flex-col min-h-screen app-container`}
       >
-        {children}
+        <Header />
+        <div className="flex flex-1">
+          <Sidebar />
+          <main className="flex-1 p-4">{children}</main>
+          <RightSidebar />
+        </div>
       </body>
     </html>
   );
