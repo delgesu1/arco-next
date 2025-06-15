@@ -1993,3 +1993,122 @@ body {
     url(https://fonts.gstatic.com/s/inter/v12/UcC73FwrK3iLTeHuS_fvQtMwCp50KnMa1ZL7W0Q5nw.woff2)
       format('woff2'); /* Using same as 400 for example, replace with actual 800 weight */
 }
+
+/* ====================================== */
+/* ETUDE DETAIL PAGE STYLES */
+/* ====================================== */
+
+.etude-detail-page {
+  padding: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.etude-detail-header {
+  background: var(--md-sys-color-surface-container);
+  border-radius: 12px;
+  padding: 2rem;
+  margin-bottom: 2rem;
+}
+
+.etude-info {
+  max-width: 800px;
+}
+
+.etude-title {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: var(--md-sys-color-on-surface);
+  margin-bottom: 0.5rem;
+}
+
+.etude-composer {
+  font-size: 1.2rem;
+  color: var(--md-sys-color-on-surface-variant);
+  margin-bottom: 1.5rem;
+}
+
+.etude-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+
+.difficulty-badge {
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.difficulty-badge.beginner {
+  background: rgba(76, 175, 80, 0.15);
+  color: #4caf50;
+}
+
+.difficulty-badge.intermediate {
+  background: rgba(255, 152, 0, 0.15);
+  color: #ff9800;
+}
+
+.difficulty-badge.advanced {
+  background: rgba(244, 67, 54, 0.15);
+  color: #f44336;
+}
+
+.etude-techniques {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.technique-tag {
+  background: var(--md-sys-color-primary-container);
+  color: var(--md-sys-color-on-primary-container);
+  padding: 0.3rem 0.8rem;
+  border-radius: 12px;
+  font-size: 0.8rem;
+  font-weight: 500;
+}
+
+.etude-description {
+  color: var(--md-sys-color-on-surface-variant);
+  font-size: 1rem;
+  line-height: 1.6;
+}
+
+.etude-pdf-container {
+  background: var(--md-sys-color-surface-container);
+  border-radius: 12px;
+  overflow: hidden;
+  min-height: 800px;
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+  .etude-detail-page {
+    padding: 1rem;
+  }
+
+  .etude-detail-header {
+    padding: 1.5rem;
+  }
+
+  .etude-title {
+    font-size: 2rem;
+  }
+
+  .etude-composer {
+    font-size: 1rem;
+  }
+
+  .etude-meta {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+}

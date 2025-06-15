@@ -7,6 +7,7 @@ export interface Etude {
   techniques: string[];
   description: string;
   thumbnailUrl: string; // Path relative to the public folder e.g., /images/etudes/kreutzer-1.png
+  pdfUrl: string; // Path to the PDF file
 }
 
 export const etudes: Etude[] = [
@@ -18,6 +19,7 @@ export const etudes: Etude[] = [
     techniques: ['Detache', 'Major Scales (One Octave)', 'Basic Rhythms'],
     description: 'Focuses on Detache and Major Scales.',
     thumbnailUrl: '/images/etudes/rode-01.png', // Placeholder - replace with actual image path
+    pdfUrl: '/pdf/etudes/kreutzer-etude-1.pdf', // Placeholder PDF path
   },
   {
     id: 2,
@@ -27,6 +29,7 @@ export const etudes: Etude[] = [
     techniques: ['Spiccato', 'Chromatic Scale', 'Shifting'],
     description: 'An advanced etude focusing on Spiccato.',
     thumbnailUrl: '/images/etudes/rode-01.png', // Placeholder
+    pdfUrl: '/pdf/etudes/kreutzer-etude-2.pdf', // Placeholder PDF path
   },
   {
     id: 3,
@@ -36,6 +39,7 @@ export const etudes: Etude[] = [
     techniques: ['Staccato', 'Double Stops'],
     description: 'Advanced etude by Rode.',
     thumbnailUrl: '/images/etudes/rode-01.png', // Placeholder
+    pdfUrl: '/pdf/etudes/rode-etude-1.pdf', // Placeholder PDF path
   },
   {
     id: 4,
@@ -45,5 +49,6 @@ export const etudes: Etude[] = [
     techniques: ['Legato', 'Finger Dexterity'],
     description: 'Intermediate etude by Dont.',
     thumbnailUrl: '/images/etudes/rode-01.png', // Placeholder
+    pdfUrl: '/pdf/etudes/dont-op35-etude-5.pdf', // Placeholder PDF path
   },
 ];

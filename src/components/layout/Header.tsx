@@ -1,7 +1,6 @@
 'use client';
 
-import { useState, useEffect, useCallback } from 'react';
-import { debounce } from '../../lib/utils';
+import { useState } from 'react';
 
 export default function Header() {
   const [searchQuery, setSearchQuery] = useState('');
@@ -14,28 +13,33 @@ export default function Header() {
     setSearchQuery('');
   };
 
-  // Placeholder for actual search logic
-  const performSearch = (query: string) => {
-    console.log('Debounced search for:', query);
-    // In later phases, this will interact with a global state / data fetching
+  // Handle Enter key press for LLM workflow
+  const handleSearchSubmit = async (query: string) => {
+    if (!query.trim()) return;
+
+    console.log('Submitting search query to LLM:', query);
+
+    // TODO: Implement LLM API call workflow:
+    // 1. Send query to LLM for interpretation
+    // 2. Update left sidebar filters based on LLM response
+    // 3. Send query to AI chat for preliminary reply
+    // 4. Clear search input after processing
+
+    // Placeholder for now
+    alert(
+      `Search submitted: "${query}"\n\nThis will:\n1. Send to LLM for interpretation\n2. Update sidebar filters\n3. Send to AI chat for preliminary reply`
+    );
+
+    // Clear search after submission
+    setSearchQuery('');
   };
 
-  // Memoize the debounced version of performSearch
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  const debouncedSearch = useCallback(
-    debounce(performSearch, 300), // 300ms debounce delay
-    [] // No dependencies, so the debounced function is created once
-  );
-
-  useEffect(() => {
-    if (searchQuery) {
-      debouncedSearch(searchQuery);
+  const handleKeyPress = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === 'Enter') {
+      event.preventDefault();
+      handleSearchSubmit(searchQuery);
     }
-    // Optionally, handle the case where searchQuery is empty (e.g., clear results)
-    // else {
-    //   console.log('Search query cleared');
-    // }
-  }, [searchQuery, debouncedSearch]);
+  };
 
   return (
     <header className="header">
@@ -54,6 +58,7 @@ export default function Header() {
               maxLength={200}
               value={searchQuery}
               onChange={handleSearchChange}
+              onKeyPress={handleKeyPress}
             />
             <button
               className="search-btn"

@@ -4,18 +4,20 @@
 import EtudeCard from './EtudeCard';
 import { etudes, Etude } from '@/data/etudesData'; // Assuming etudesData.ts is in src/data
 import { useState, useEffect } from 'react'; // For potential client-side filtering/state
+import { useRouter } from 'next/navigation'; // For navigation
 
 // You might want to fetch this data or pass it as props in a real app
 // For now, we use the imported mock data.
 
 const EtudeList: React.FC = () => {
   // const [filteredEtudes, setFilteredEtudes] = useState<Etude[]>(etudes);
+  const router = useRouter();
 
   // Example: onClick handler for a card
   const handleCardClick = (etude: Etude) => {
-    console.log('Clicked etude:', etude.title);
-    // Here you could navigate to a detail page, open a modal, etc.
-    // For example: router.push(`/etudes/${etude.id}`);
+    console.log('Navigating to etude:', etude.title);
+    // Navigate to the individual etude page
+    router.push(`/etude/${etude.id}`);
   };
 
   if (!etudes || etudes.length === 0) {
