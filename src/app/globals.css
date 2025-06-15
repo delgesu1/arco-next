@@ -32,6 +32,7 @@
   --md-sys-elevation-3: 0 4px 8px rgba(0, 0, 0, 0.7);
   --md-sys-elevation-4: 0 6px 10px rgba(0, 0, 0, 0.8);
   --md-sys-elevation-5: 0 8px 12px rgba(0, 0, 0, 0.9);
+  --sidebar-handle-width: 56px; /* Width of the handle for minimized sidebar */
 }
 
 * {
@@ -102,7 +103,7 @@ body {
 
 .search-wrapper {
   position: relative;
-  background: var(--md-sys-color-surface-container);
+  background: #22262b;
   border: 1px solid var(--md-sys-color-outline-variant);
   border-radius: 28px;
   overflow: hidden;
@@ -232,7 +233,8 @@ body {
   display: flex;
   flex: 1;
   overflow: hidden; /* This is for the container of left-sidebar, main-sheet-music, right-sidebar */
-  gap: 12px;
+  gap: 0.75rem; /* Horizontal spacing between sections */
+  padding: 0.75rem; /* Outer spacing around all sections */
 }
 
 /* Styling for the scrollable area within the main content where etudes are shown */
@@ -242,6 +244,13 @@ body {
   padding: 1.5rem; /* Match sidebar-content padding or adjust as needed */
   scrollbar-width: thin; /* For Firefox */
   scrollbar-color: var(--md-sys-color-outline-variant) transparent; /* For Firefox */
+
+  /* Add card-like styling to match sidebars */
+  background: #22262b;
+  border-radius: 12px;
+  box-shadow: none;
+  margin: 0; /* Remove margin since container now has padding */
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 /* Webkit scrollbar styling for #mainContent */
@@ -276,20 +285,42 @@ body {
 
 /* Sidebar Base Styles */
 .sidebar {
-  background: var(--md-sys-color-surface-container);
+  background: #22262b;
   border-right: none;
   transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   display: flex;
   flex-direction: column;
   position: relative;
-  box-shadow: var(--md-sys-elevation-1);
+  box-shadow: none;
+  border-radius: 12px; /* Match center card corners */
+  margin: 0; /* Remove external margin so height matches center card */
+  overflow: hidden; /* Clip children so rounded corners stay visible */
 }
 
 .sidebar.minimized {
-  width: 0 !important;
-  min-width: 0 !important;
+  width: var(--sidebar-handle-width) !important;
+  min-width: var(--sidebar-handle-width) !important;
   overflow: hidden;
-  border-right: none;
+}
+
+.sidebar.minimized .sidebar-header {
+  padding: 0;
+  justify-content: center;
+  align-items: center;
+  height: var(--sidebar-handle-width);
+  border-bottom: none;
+}
+
+.sidebar.minimized .sidebar-title {
+  display: none;
+}
+
+.sidebar.minimized .minimize-btn {
+  margin: 0; /* Reset margin if any, rely on flex centering */
+}
+
+.sidebar.minimized .sidebar-content {
+  display: none;
 }
 
 .sidebar-header {
@@ -378,6 +409,7 @@ body {
   color: var(--md-sys-color-on-surface);
   text-transform: none;
   letter-spacing: normal;
+  margin: 0;
 }
 
 .technique-section {
@@ -391,21 +423,16 @@ body {
 
 /* Sub-category titles (e.g., 'Bowing Techniques') */
 .technique-section .section-title {
-  font-size: 0.95rem;
+  font-size: 0.9rem;
   font-weight: 500;
-  color: var(--md-sys-color-on-surface-variant);
-  padding: 0.75rem 0;
-  cursor: pointer;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  transition: color 0.2s ease;
-  border-bottom: 1px solid transparent; /* For hover effect */
-}
-
-.technique-section .section-title:hover {
   color: var(--md-sys-color-primary);
-  border-bottom-color: var(--md-sys-color-primary-container);
+  margin-bottom: 0.5rem;
+  cursor: default;
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  text-transform: none;
+  letter-spacing: normal;
 }
 
 .technique-section .section-title .icon {
@@ -556,19 +583,264 @@ body {
   color: var(--md-sys-color-primary);
 }
 
+.clear-filters-btn i {
+  pointer-events: none;
+}
+
+/* AI Assistant Header */
+.ai-header-content {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex: 1;
+}
+
+.chat-history-btn {
+  background: none;
+  border: none;
+  color: var(--md-sys-color-on-surface-variant);
+  cursor: pointer;
+  padding: 8px;
+  border-radius: 8px;
+  transition: all 0.2s ease;
+  font-size: 0.9rem;
+}
+
+.chat-history-btn:hover {
+  background: var(--md-sys-color-surface-container-highest);
+  color: var(--md-sys-color-primary);
+}
+
+.chat-history-btn:active {
+  transform: scale(0.95);
+}
+
+/* Modern AI Assistant Styling */
+.ai-empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 3rem 2rem;
+  height: 100%;
+  min-height: 400px;
+}
+
+.ai-robot-icon {
+  width: 80px;
+  height: 80px;
+  background: var(--md-sys-color-surface-container-highest);
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1.5rem;
+  color: var(--md-sys-color-on-surface-variant);
+}
+
+.ai-robot-icon i {
+  font-size: 2rem;
+}
+
+.ai-welcome-title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: var(--md-sys-color-on-surface);
+  margin-bottom: 0.75rem;
+  letter-spacing: -0.02em;
+}
+
+.ai-welcome-text {
+  font-size: 0.95rem;
+  color: var(--md-sys-color-on-surface-variant);
+  line-height: 1.5;
+  max-width: 280px;
+  margin: 0 auto;
+}
+
+/* Filter Section Styles - Exact match from original app */
+.filter-section {
+  margin-bottom: 1rem;
+}
+
+.filter-section:last-child {
+  margin-bottom: 0;
+}
+
+.section-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.75rem 0;
+  cursor: pointer;
+  border-bottom: 1px solid var(--md-sys-color-outline-variant);
+  margin-bottom: 0.75rem;
+  transition: all 0.2s ease;
+}
+
+.section-header:hover {
+  background: #22262b;
+  border-radius: 8px;
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
+}
+
+/* Top-level accordion titles (e.g., 'Techniques', 'Composers') */
+.section-header .section-title {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--md-sys-color-on-surface);
+  text-transform: none;
+  letter-spacing: normal;
+  margin: 0;
+}
+
+.section-toggle {
+  background: none;
+  border: none;
+  color: var(--md-sys-color-on-surface-variant);
+  cursor: pointer;
+  padding: 0.25rem;
+  border-radius: 50%;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+}
+
+.section-toggle:hover {
+  background: var(--md-sys-color-surface-container-high);
+  color: var(--md-sys-color-primary);
+}
+
+.section-toggle i {
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  font-size: 0.75rem;
+}
+
+.section-toggle[aria-expanded='false'] i {
+  transform: rotate(-90deg);
+}
+
+.section-content {
+  overflow: hidden;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.technique-section {
+  margin-bottom: 2rem;
+}
+
+.technique-section:last-child {
+  margin-bottom: 0;
+}
+
+/* Duplicate rule for .technique-section .section-title removed. Styles are handled by the rule at line 414. */
+
+.technique-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.technique-tag {
+  background: var(--md-sys-color-surface-container-high);
+  border: 1px solid var(--md-sys-color-outline-variant);
+  border-radius: 20px;
+  padding: 0.5rem 1rem;
+  font-size: 0.875rem;
+  color: var(--md-sys-color-on-surface);
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  user-select: none;
+}
+
+.technique-tag:hover {
+  background: var(--md-sys-color-surface-container-highest);
+  border-color: var(--md-sys-color-primary);
+  transform: translateY(-1px);
+  box-shadow: var(--md-sys-elevation-2);
+}
+
+.technique-tag.selected {
+  background: var(--md-sys-color-primary-container);
+  border-color: var(--md-sys-color-primary);
+  color: var(--md-sys-color-on-primary-container);
+}
+
+.technique-tag.selected::after {
+  content: '';
+  position: absolute;
+  top: -2px;
+  right: -2px;
+  width: 8px;
+  height: 8px;
+  background: var(--md-sys-color-primary);
+  border-radius: 50%;
+  border: 2px solid var(--md-sys-color-surface-container);
+}
+
+/* Selection Counter */
+.selection-counter {
+  position: fixed;
+  bottom: 1.5rem;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--md-sys-color-primary-container);
+  color: var(--md-sys-color-on-primary-container);
+  padding: 0.4rem 1rem;
+  border-radius: 999px;
+  font-size: 0.85rem;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  opacity: 0;
+  pointer-events: none;
+  transition:
+    opacity 0.2s ease,
+    transform 0.2s ease;
+  z-index: 1000;
+}
+
+.selection-counter.visible {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* Clear filters button */
+.clear-filters-btn {
+  background: transparent;
+  border: none;
+  color: inherit;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  padding: 0;
+  font-size: 1rem;
+}
+
+.clear-filters-btn i {
+  pointer-events: none;
+}
+
 /* Sheet Music Grid */
 .sheet-music-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-  gap: 1.5rem;
-  padding: 0rem; /* No padding here, #mainContent has it */
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 1rem;
+  padding: 1rem;
 }
 
 .sheet-item {
-  background: var(--md-sys-color-surface-container);
+  background: #2a2d31; /* Subtly elevated from container background for better contrast */
   border-radius: 12px;
   overflow: hidden;
-  box-shadow: var(--md-sys-elevation-1);
+  box-shadow: none;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   cursor: pointer;
   display: flex;
@@ -581,13 +853,12 @@ body {
 }
 
 .sheet-thumbnail {
-  width: 100%;
-  height: 180px; /* Adjust as needed */
-  background-color: var(--md-sys-color-surface-container-high);
+  background-color: var(--md-sys-color-surface-variant); /* Placeholder color */
   display: flex;
   align-items: center;
   justify-content: center;
-  overflow: hidden;
+  overflow: hidden; /* Ensures content respects rounded corners */
+  /* rounded-t-lg is applied via Tailwind to the div in EtudeCard.tsx */
 }
 
 .sheet-thumbnail img {
@@ -764,7 +1035,7 @@ body {
   border-left: 1px solid var(--md-sys-color-outline-variant);
   display: flex;
   flex-direction: column;
-  background: var(--md-sys-color-surface-container);
+  background: #22262b;
   transition:
     width 0.3s ease,
     min-width 0.3s ease;
@@ -784,10 +1055,6 @@ body {
 .right-sidebar.minimized .chat-header {
   justify-content: center;
   padding: 1rem 0;
-}
-
-.right-sidebar.minimized .minimize-chat-btn {
-  /* Optionally hide or change icon when minimized */
 }
 
 .chat-header {
@@ -940,8 +1207,52 @@ body {
   cursor: not-allowed;
 }
 
-.chat-input-wrapper.expanded .chat-input-container {
-  /* Optional: Adjust container style when textarea expands */
+/* Additional chat interface styles from original app */
+.chat-container {
+  display: flex;
+  flex-direction: column;
+  flex: 1; /* Grow to fill available space in .right-sidebar */
+  min-height: 0; /* Allow proper shrinking for nested flex items */
+  position: relative; /* Keep for potential pseudo-elements */
+}
+
+.ai-header-content {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.chat-history-btn {
+  background: none;
+  border: none;
+  border-radius: 6px;
+  padding: 6px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  color: var(--md-sys-color-on-surface-variant);
+}
+
+.chat-history-btn:hover {
+  background: var(--md-sys-color-surface-container-high);
+  color: var(--md-sys-color-on-surface);
+}
+
+/* Empty State */
+.empty-state {
+  text-align: center;
+  padding: 3rem 1rem;
+  color: var(--md-sys-color-on-surface-variant);
+}
+
+.empty-state i {
+  font-size: 4rem;
+  margin-bottom: 1rem;
+  opacity: 0.5;
+}
+
+.empty-state h3 {
+  margin-bottom: 0.5rem;
+  color: var(--md-sys-color-on-surface);
 }
 
 /* Chat History Modal */
@@ -970,7 +1281,7 @@ body {
 }
 
 .chat-history-modal-content {
-  background: var(--md-sys-color-surface-container);
+  background: #22262b;
   width: 60%;
   max-width: 800px;
   height: 70vh;
@@ -1048,10 +1359,6 @@ body {
 
 .chat-history-message.user {
   font-weight: 500; /* Or some other distinction */
-}
-
-.chat-history-message.bot {
-  /* Style for bot messages if needed */
 }
 
 .chat-history-footer {
@@ -1132,10 +1439,12 @@ body {
   text-align: center;
   animation: fadeIn 0.3s ease-in-out;
 }
+
 .technique-preview-content h3 {
   color: var(--md-sys-color-primary);
   margin-bottom: 1rem;
 }
+
 .technique-preview-content p {
   color: var(--md-sys-color-on-surface-variant);
   font-size: 1.1rem;
@@ -1450,18 +1759,194 @@ body {
   transform: rotate(-90deg);
 }
 
-.section-toggle .fa-chevron-right {
-  /* If you use chevron-right for collapsed state */
-  /* transform: rotate(0deg); */
+/* Sidebar Expand Buttons - shown when sidebars are collapsed */
+.sidebar-expand-btn {
+  position: fixed;
+  top: calc(
+    3rem + 32px + 0.75rem - 20px
+  ); /* Header padding (1.5rem) + half minimize btn (16px) - half this btn (20px) = perfect alignment */
+  width: 40px;
+  height: 40px;
+  background: var(--md-sys-color-primary);
+  border: none;
+  color: var(--md-sys-color-on-primary);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+  font-weight: 600;
+  z-index: 1000;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow:
+    0 4px 12px rgba(0, 0, 0, 0.15),
+    0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-.section-toggle.expanded .fa-chevron-right {
-  /* transform: rotate(90deg); */
+.sidebar-expand-btn:hover {
+  background: var(--md-sys-color-primary-container);
+  color: var(--md-sys-color-primary);
+  transform: scale(1.05);
+  box-shadow:
+    0 6px 16px rgba(0, 0, 0, 0.2),
+    0 3px 6px rgba(0, 0, 0, 0.15);
 }
 
-/* Ensure that the Font Awesome CSS is loaded if you're using it */
-/* @import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css'); */
-/* This is better handled in the HTML <head> or via JS import if using a package */
+.sidebar-expand-btn:active {
+  transform: scale(0.95);
+  transition: all 0.1s ease;
+}
+
+.sidebar-expand-btn.left {
+  left: 0;
+  border-radius: 0 20px 20px 0;
+}
+
+.sidebar-expand-btn.right {
+  right: 0;
+  border-radius: 20px 0 0 20px;
+}
+
+.sidebar-expand-btn i {
+  font-size: 1.3rem;
+  font-weight: 700;
+}
+
+/* Modern AI Assistant Styling */
+.ai-empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 3rem 2rem;
+  height: 100%;
+  min-height: 400px;
+}
+
+.ai-robot-icon {
+  width: 80px;
+  height: 80px;
+  background: var(--md-sys-color-surface-container-highest);
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1.5rem;
+  color: var(--md-sys-color-on-surface-variant);
+}
+
+.ai-robot-icon i {
+  font-size: 2rem;
+}
+
+.ai-welcome-title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: var(--md-sys-color-on-surface);
+  margin-bottom: 0.75rem;
+  letter-spacing: -0.02em;
+}
+
+.ai-welcome-text {
+  font-size: 0.95rem;
+  color: var(--md-sys-color-on-surface-variant);
+  line-height: 1.5;
+  max-width: 280px;
+  margin: 0 auto;
+}
+
+/* Modern Chat Input */
+.modern-chat-input {
+  padding: 1.5rem;
+  border-top: 1px solid var(--md-sys-color-outline-variant);
+  background: var(--md-sys-color-surface);
+}
+
+.chat-input-wrapper {
+  position: relative;
+  display: flex;
+  align-items: flex-end;
+  background: var(--md-sys-color-surface);
+  border-radius: 24px;
+  padding: 12px 12px 12px 20px;
+  border: 1.5px solid var(--md-sys-color-outline-variant);
+  transition: all 0.2s ease;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.chat-input-wrapper:focus-within {
+  border-color: var(--md-sys-color-primary);
+  box-shadow:
+    0 0 0 3px rgba(59, 130, 246, 0.08),
+    0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.chat-input-field {
+  flex: 1;
+  background: transparent;
+  border: none;
+  outline: none;
+  resize: none;
+  font-size: 0.95rem;
+  line-height: 1.5;
+  color: var(--md-sys-color-on-surface);
+  padding: 10px 0;
+  max-height: 120px;
+  min-height: 24px;
+  font-family: inherit;
+
+  /* Hide scrollbar completely */
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE and Edge */
+  overflow-y: auto;
+}
+
+/* Hide scrollbar for WebKit browsers */
+.chat-input-field::-webkit-scrollbar {
+  display: none;
+}
+
+.chat-input-field::placeholder {
+  color: var(--md-sys-color-on-surface-variant);
+  font-weight: 400;
+}
+
+.chat-submit-btn {
+  width: 36px;
+  height: 36px;
+  background: var(--md-sys-color-primary);
+  border: none;
+  border-radius: 50%;
+  color: var(--md-sys-color-on-primary);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: 12px;
+  flex-shrink: 0;
+  transition: all 0.2s ease;
+  font-size: 0.9rem;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.chat-submit-btn:hover {
+  background: var(--md-sys-color-primary);
+  transform: scale(1.05);
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.25);
+}
+
+.chat-submit-btn:active {
+  transform: scale(0.95);
+}
+
+.chat-submit-btn:disabled {
+  background: var(--md-sys-color-surface-container-high);
+  color: var(--md-sys-color-on-surface-variant);
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
 
 /* Fallback for Inter font if not loaded via <link> or @import */
 @font-face {

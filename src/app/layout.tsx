@@ -4,6 +4,7 @@ import './globals.css';
 import Header from '@/components/layout/Header';
 import Sidebar from '@/components/layout/Sidebar';
 import RightSidebar from '@/components/layout/RightSidebar';
+import SelectionCounter from '@/components/layout/SelectionCounter';
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
@@ -48,11 +49,14 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} ${inter.className} antialiased flex flex-col min-h-screen app-container`}
       >
         <Header />
-        <div className="flex flex-1">
+        <div className="flex flex-1 main-content">
           <Sidebar />
-          <main className="flex-1 p-4">{children}</main>
+          <main id="mainContent" className="flex-1">
+            {children}
+          </main>
           <RightSidebar />
         </div>
+        <SelectionCounter />
       </body>
     </html>
   );

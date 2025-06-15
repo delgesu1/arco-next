@@ -1,9 +1,17 @@
 import Image from 'next/image';
+import EtudeList from '@/components/etudes/EtudeList'; // Import EtudeList
 
 export default function Home() {
   return (
-    <div className="content-body" id="mainContent">
-      <div className="empty-state text-center py-10">
+    <>
+      {/* 
+        You might want to conditionally show the "Welcome" message 
+        only if no filters are selected and thus no etudes are to be shown.
+        For now, let's assume EtudeList will handle its own empty state 
+        if no etudes match filters (though currently it shows all mock data).
+      */}
+
+      {/* <div className="empty-state text-center py-10">
         <i className="fas fa-music text-4xl text-gray-400 mb-4"></i>
         <h3 className="text-2xl font-semibold mb-2">
           Welcome to Arco (Next.js)
@@ -12,13 +20,10 @@ export default function Home() {
           Search for techniques or select from the sidebar to get started with
           your practice session.
         </p>
-      </div>
-      <div id="etudeGridPlaceholder" className="mt-8">
-        {/* Placeholder for where the etude grid will be rendered */}
-        <p className="text-center text-gray-500">
-          Etude grid will appear here.
-        </p>
-      </div>
-    </div>
+      </div> */}
+
+      {/* Replace the placeholder with the EtudeList component */}
+      <EtudeList />
+    </>
   );
 }
