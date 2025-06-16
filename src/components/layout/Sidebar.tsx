@@ -3,27 +3,39 @@
 import { useState, useEffect } from 'react';
 import { useFiltersStore } from '../../store/filtersStore';
 // NEW: Import data from sidebarData.ts
-import { techniqueCategories, composers } from '../../data/sidebarData';
+import {
+  techniqueCategories,
+  composersWithVolumes,
+} from '../../data/sidebarData';
 
 export default function Sidebar() {
   const [isMinimized, setIsMinimized] = useState(false);
   const [hasMounted, setHasMounted] = useState(false);
   const [techniquesExpanded, setTechniquesExpanded] = useState(true);
-  const [composersExpanded, setComposersExpanded] = useState(true);
 
-  const { selectedTechniqueIds, selectedComposerIds, actions } =
-    useFiltersStore();
+  const {
+    selectedTechniqueIds,
+    selectedComposerIds,
+    selectedVolumeIds,
+    searchTechniqueIds,
+    searchComposerIds,
+    actions,
+  } = useFiltersStore();
 
   const {
     toggleTechniqueSelection,
     toggleComposerSelection,
+    toggleVolumeSelection,
     setHoveredTechnique,
     setHoveredComposer,
+    setHoveredVolume,
     clearAllSelections,
   } = actions;
 
   const totalSelected =
-    selectedTechniqueIds.length + selectedComposerIds.length;
+    selectedTechniqueIds.length +
+    selectedComposerIds.length +
+    selectedVolumeIds.length;
 
   useEffect(() => {
     setHasMounted(true);
@@ -35,10 +47,6 @@ export default function Sidebar() {
 
   const toggleTechniques = () => {
     setTechniquesExpanded(!techniquesExpanded);
-  };
-
-  const toggleComposers = () => {
-    setComposersExpanded(!composersExpanded);
   };
 
   return (
@@ -94,17 +102,27 @@ export default function Sidebar() {
                         <div key={category.title} className="technique-section">
                           <h4 className="section-title">{category.title}</h4>
                           <div className="technique-tags">
-                            {category.techniques.map((technique) => (
-                              <button
-                                key={technique.id}
-                                className={`technique-tag ${selectedTechniqueIds.includes(technique.id) ? 'selected' : ''}`}
-                                onClick={() =>
-                                  toggleTechniqueSelection(technique.id)
-                                }
-                              >
-                                {technique.name}
-                              </button>
-                            ))}
+                            {category.techniques
+                              .filter(
+                                (technique) =>
+                                  searchTechniqueIds.length === 0 ||
+                                  searchTechniqueIds.includes(technique.id)
+                              )
+                              .map((technique) => (
+                                <button
+                                  key={technique.id}
+                                  className={`technique-tag ${selectedTechniqueIds.includes(technique.id) ? 'selected' : ''}`}
+                                  onClick={() =>
+                                    toggleTechniqueSelection(technique.id)
+                                  }
+                                  onMouseEnter={() =>
+                                    setHoveredTechnique(technique.id)
+                                  }
+                                  onMouseLeave={() => setHoveredTechnique(null)}
+                                >
+                                  {technique.name}
+                                </button>
+                              ))}
                           </div>
                         </div>
                       ))}
@@ -112,41 +130,87 @@ export default function Sidebar() {
                   )}
                 </div>
 
-                {/* Composers Filter */}
+                {/* Composers & Volumes Filter */}
                 <div className="filter-section">
-                  <div
-                    className="section-header"
-                    onClick={() => setComposersExpanded(!composersExpanded)}
-                  >
+                  <div className="section-header">
                     <h3 className="section-title">Composers</h3>
-                    <button
-                      className="section-toggle"
-                      aria-expanded={composersExpanded}
-                      aria-label={
-                        composersExpanded
-                          ? 'Collapse composers'
-                          : 'Expand composers'
-                      }
-                    >
-                      <i className="fas fa-chevron-down"></i>
-                    </button>
                   </div>
 
-                  {composersExpanded && (
-                    <div className="section-content">
-                      <div className="technique-tags">
-                        {composers.map((composer) => (
-                          <button
+                  <div className="section-content">
+                    <div className="composers-list">
+                      {composersWithVolumes
+                        .filter(
+                          (composer) =>
+                            searchComposerIds.length === 0 ||
+                            searchComposerIds.includes(composer.id)
+                        )
+                        .map((composer) => (
+                          <div
                             key={composer.id}
-                            className={`technique-tag ${selectedComposerIds.includes(composer.id) ? 'selected' : ''}`}
-                            onClick={() => toggleComposerSelection(composer.id)}
+                            className="composer-group"
+                            style={{ marginBottom: '1.5rem' }}
                           >
-                            {composer.name}
-                          </button>
+                            {/* Composer Button */}
+                            <div
+                              className={`composer-heading ${selectedComposerIds.includes(composer.id) ? 'selected' : ''}`}
+                              onClick={() =>
+                                toggleComposerSelection(composer.id)
+                              }
+                              onMouseEnter={() =>
+                                setHoveredComposer(composer.id)
+                              }
+                              onMouseLeave={() => setHoveredComposer(null)}
+                            >
+                              <div className="composer-name-row">
+                                <span className="composer-name">
+                                  {composer.name}
+                                </span>
+                                <span className="composer-vol-count">
+                                  {composer.volumes.length} vol
+                                  {composer.volumes.length !== 1 ? 's' : ''}
+                                </span>
+                              </div>
+                              {selectedComposerIds.includes(composer.id) && (
+                                <div className="composer-selected-indicator"></div>
+                              )}
+                            </div>
+
+                            {/* Volumes - Always Visible */}
+                            {composer.volumes.length > 0 && (
+                              <div
+                                className="technique-tags"
+                                style={{
+                                  marginTop: '0.75rem',
+                                  marginLeft: '1rem',
+                                  gap: '0.5rem',
+                                }}
+                              >
+                                {composer.volumes.map((vol) => (
+                                  <div
+                                    key={vol.id}
+                                    className={`technique-tag volume-button ${selectedVolumeIds.includes(vol.id) ? 'selected' : ''}`}
+                                    onClick={() =>
+                                      toggleVolumeSelection(vol.id, composer.id)
+                                    }
+                                    onMouseEnter={() =>
+                                      setHoveredVolume(vol.id, composer.id)
+                                    }
+                                    onMouseLeave={() => setHoveredVolume(null)}
+                                    style={{
+                                      fontSize: '0.75rem',
+                                      padding: '0.375rem 0.75rem',
+                                      cursor: 'pointer',
+                                    }}
+                                  >
+                                    {vol.name}
+                                  </div>
+                                ))}
+                              </div>
+                            )}
+                          </div>
                         ))}
-                      </div>
                     </div>
-                  )}
+                  </div>
                 </div>
 
                 {/* Clear Filters */}

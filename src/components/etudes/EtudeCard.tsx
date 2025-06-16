@@ -2,6 +2,8 @@
 import Image from 'next/image'; // Using next/image for optimization
 
 interface EtudeCardProps {
+  volumeName: string;
+
   id: number | string;
   title: string;
   composer: string;
@@ -15,6 +17,7 @@ const EtudeCard: React.FC<EtudeCardProps> = ({
   id,
   title,
   composer,
+  volumeName,
   difficulty,
   thumbnailUrl,
   onClick,
@@ -68,6 +71,7 @@ const EtudeCard: React.FC<EtudeCardProps> = ({
       <div className="sheet-info">
         <div className="sheet-title">{title}</div>
         <div className="sheet-composer">{composer}</div>
+        <div className="sheet-volume text-sm text-gray-600">{volumeName}</div>
         <div
           className={`sheet-difficulty sheet-difficulty-${difficulty.toLowerCase()}`}
         >

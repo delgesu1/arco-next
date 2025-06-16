@@ -1,6 +1,8 @@
 'use client';
 
 import { useState } from 'react';
+import { useFiltersActions } from '@/store/filtersStore';
+import { useChatStore } from '@/store/chatStore';
 
 export default function Header() {
   const [searchQuery, setSearchQuery] = useState('');
@@ -11,27 +13,21 @@ export default function Header() {
 
   const clearSearch = () => {
     setSearchQuery('');
+    filtersActions.applySearchQuery('');
   };
 
   // Handle Enter key press for LLM workflow
-  const handleSearchSubmit = async (query: string) => {
+  const filtersActions = useFiltersActions();
+  const chatActions = useChatStore((s) => s.actions);
+
+  const handleSearchSubmit = (query: string) => {
     if (!query.trim()) return;
 
-    console.log('Submitting search query to LLM:', query);
+    // Simulate LLM → random filter selection
+    filtersActions.applySearchQuery(query);
 
-    // TODO: Implement LLM API call workflow:
-    // 1. Send query to LLM for interpretation
-    // 2. Update left sidebar filters based on LLM response
-    // 3. Send query to AI chat for preliminary reply
-    // 4. Clear search input after processing
-
-    // Placeholder for now
-    alert(
-      `Search submitted: "${query}"\n\nThis will:\n1. Send to LLM for interpretation\n2. Update sidebar filters\n3. Send to AI chat for preliminary reply`
-    );
-
-    // Clear search after submission
-    setSearchQuery('');
+    // Start a new chat session for this search
+    chatActions.startNewChat(query);
   };
 
   const handleKeyPress = (event: React.KeyboardEvent<HTMLInputElement>) => {

@@ -1,0 +1,264 @@
+.pdf-viewer-inline {
+  height: 80vh !important; /* extend viewer vertically */
+  overflow: auto !important; /* internal scroll both axes */
+  background: transparent !important;
+  border-radius: 0 !important;
+}
+
+/* Content area should scroll and not center the page */
+.pdf-viewer-inline .pdf-content-area {
+  display: block !important;
+  padding: 70px 20px 20px 20px !important; /* top space for toolbar */
+  overflow: auto !important; /* scroll both directions */
+}
+
+/* Make inner container auto-size so scrollbars appear */
+.pdf-viewer-inline .pdf-document-container {
+  display: block !important;
+  width: fit-content !important;
+  min-height: unset !important;
+}
+
+/* Modern PDF Control Bar Styling */
+.pdf-viewer-inline .pdf-toolbar-inline {
+  background: rgba(26, 26, 26, 0.85) !important;
+  backdrop-filter: blur(20px) !important;
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  padding: 12px 20px !important;
+  margin: 0 !important;
+  position: absolute !important;
+  top: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  z-index: 10 !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06) !important;
+}
+
+/* Control sections */
+.pdf-viewer-inline .pdf-controls-left,
+.pdf-viewer-inline .pdf-controls-center,
+.pdf-viewer-inline .pdf-controls-right {
+  display: flex !important;
+  align-items: center !important;
+  gap: 12px !important;
+}
+
+/* Title styling */
+.pdf-viewer-inline .pdf-title-compact {
+  font-size: 14px !important;
+  font-weight: 500 !important;
+  color: rgba(255, 255, 255, 0.9) !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+}
+
+.pdf-viewer-inline .pdf-title-compact i {
+  color: #ef4444 !important;
+  font-size: 16px !important;
+}
+
+/* Modern button styling */
+.pdf-viewer-inline .pdf-btn {
+  width: 32px !important;
+  height: 32px !important;
+  border-radius: 6px !important;
+  border: none !important;
+  background: transparent !important;
+  color: rgba(255, 255, 255, 0.7) !important;
+  font-size: 13px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  transition: all 0.2s ease !important;
+  cursor: pointer !important;
+}
+
+.pdf-viewer-inline .pdf-btn:hover:not(:disabled) {
+  background: rgba(255, 255, 255, 0.08) !important;
+  color: rgba(255, 255, 255, 0.95) !important;
+  transform: none !important;
+}
+
+.pdf-viewer-inline .pdf-btn:disabled {
+  opacity: 0.3 !important;
+  cursor: not-allowed !important;
+}
+
+/* Navigation buttons */
+.pdf-viewer-inline .pdf-btn-nav {
+  background: transparent !important;
+  color: #60a5fa !important;
+}
+
+.pdf-viewer-inline .pdf-btn-nav:hover:not(:disabled) {
+  background: rgba(96, 165, 250, 0.15) !important;
+  color: #93c5fd !important;
+}
+
+/* Page display */
+.pdf-viewer-inline .pdf-page-display {
+  background: rgba(255, 255, 255, 0.05) !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  border-radius: 6px !important;
+  padding: 4px 8px !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: 4px !important;
+  font-size: 12px !important;
+  font-weight: 500 !important;
+  color: rgba(255, 255, 255, 0.8) !important;
+}
+
+.pdf-viewer-inline .pdf-page-input {
+  background: transparent !important;
+  border: none !important;
+  font-size: 12px !important;
+  font-weight: 500 !important;
+  color: rgba(255, 255, 255, 0.95) !important;
+  width: 28px !important;
+  text-align: center !important;
+  outline: none !important;
+}
+
+.pdf-viewer-inline .pdf-page-total {
+  color: rgba(255, 255, 255, 0.6) !important;
+  font-size: 12px !important;
+}
+
+/* Zoom display button */
+.pdf-viewer-inline .pdf-zoom-display {
+  background: rgba(255, 255, 255, 0.05) !important;
+  color: rgba(255, 255, 255, 0.8) !important;
+  font-size: 11px !important;
+  font-weight: 500 !important;
+  min-width: 44px !important;
+  border-radius: 6px !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+}
+
+.pdf-viewer-inline .pdf-zoom-display:hover {
+  background: rgba(255, 255, 255, 0.08) !important;
+  color: rgba(255, 255, 255, 0.95) !important;
+}
+
+/* Divider */
+.pdf-viewer-inline .pdf-controls-divider {
+  width: 1px !important;
+  height: 16px !important;
+  background: rgba(255, 255, 255, 0.15) !important;
+  margin: 0 8px !important;
+}
+
+/* Fullscreen button special styling */
+.pdf-viewer-inline .pdf-btn:last-child {
+  color: #34d399 !important;
+}
+
+.pdf-viewer-inline .pdf-btn:last-child:hover {
+  background: rgba(52, 211, 153, 0.15) !important;
+  color: #6ee7b7 !important;
+}
+
+/* =========================
+   Fullscreen Control Bar
+   ========================= */
+.pdf-viewer-premium.fullscreen .pdf-controls-bar {
+  background: rgba(26, 26, 26, 0.85) !important;
+  backdrop-filter: blur(20px) !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06) !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  padding: 12px 20px !important;
+  left: 0 !important;
+  right: 0 !important;
+  top: 0 !important;
+  transform: none !important; /* remove centering */
+  gap: 12px !important;
+}
+
+/* Align internal groups */
+.pdf-viewer-premium.fullscreen .pdf-controls-bar .pdf-controls-left,
+.pdf-viewer-premium.fullscreen .pdf-controls-bar .pdf-controls-center,
+.pdf-viewer-premium.fullscreen .pdf-controls-bar .pdf-controls-right {
+  display: flex !important;
+  align-items: center !important;
+  gap: 12px !important;
+}
+
+/* Buttons in fullscreen */
+.pdf-viewer-premium.fullscreen .pdf-controls-bar .pdf-btn {
+  width: 32px !important;
+  height: 32px !important;
+  border-radius: 6px !important;
+  border: none !important;
+  background: transparent !important;
+  color: rgba(255, 255, 255, 0.7) !important;
+  font-size: 13px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  transition: all 0.2s ease !important;
+}
+
+.pdf-viewer-premium.fullscreen .pdf-controls-bar .pdf-btn:hover:not(:disabled) {
+  background: rgba(255, 255, 255, 0.08) !important;
+  color: rgba(255, 255, 255, 0.95) !important;
+}
+
+.pdf-viewer-premium.fullscreen .pdf-controls-bar .pdf-btn:disabled {
+  opacity: 0.3 !important;
+  cursor: not-allowed !important;
+}
+
+/* Navigation buttons */
+.pdf-viewer-premium.fullscreen .pdf-controls-bar .pdf-btn-nav {
+  background: transparent !important;
+  color: #60a5fa !important;
+}
+
+.pdf-viewer-premium.fullscreen
+  .pdf-controls-bar
+  .pdf-btn-nav:hover:not(:disabled) {
+  background: rgba(96, 165, 250, 0.15) !important;
+  color: #93c5fd !important;
+}
+
+/* Page & zoom display */
+.pdf-viewer-premium.fullscreen .pdf-controls-bar .pdf-page-display,
+.pdf-viewer-premium.fullscreen .pdf-controls-bar .pdf-zoom-display {
+  background: rgba(255, 255, 255, 0.05) !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  border-radius: 6px !important;
+  padding: 4px 8px !important;
+  font-size: 11px !important;
+  font-weight: 500 !important;
+  color: rgba(255, 255, 255, 0.8) !important;
+}
+
+.pdf-viewer-premium.fullscreen .pdf-controls-bar .pdf-page-input {
+  background: transparent !important;
+  border: none !important;
+  width: 28px !important;
+  text-align: center !important;
+  color: rgba(255, 255, 255, 0.95) !important;
+}
+
+.pdf-viewer-premium.fullscreen .pdf-controls-bar .pdf-controls-divider {
+  width: 1px !important;
+  height: 16px !important;
+  background: rgba(255, 255, 255, 0.15) !important;
+  margin: 0 8px !important;
+}
+
+/* Fullscreen specific fullscreen button color */
+.pdf-viewer-premium.fullscreen .pdf-controls-bar .pdf-btn:last-child {
+  color: #34d399 !important;
+}
+
+.pdf-viewer-premium.fullscreen .pdf-controls-bar .pdf-btn:last-child:hover {
+  background: rgba(52, 211, 153, 0.15) !important;
+  color: #6ee7b7 !important;
+}

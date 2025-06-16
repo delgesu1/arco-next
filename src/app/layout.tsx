@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { Geist, Geist_Mono, Inter } from 'next/font/google';
 import './globals.css';
+import './pdf-overrides.css';
 import Header from '@/components/layout/Header';
 import Sidebar from '@/components/layout/Sidebar';
 import RightSidebar from '@/components/layout/RightSidebar';
