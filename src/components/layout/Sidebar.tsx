@@ -45,10 +45,6 @@ export default function Sidebar() {
     setIsMinimized(!isMinimized);
   };
 
-  const toggleTechniques = () => {
-    setTechniquesExpanded(!techniquesExpanded);
-  };
-
   return (
     <>
       {isMinimized ? (

@@ -13,6 +13,7 @@
     "*.{js,jsx,ts,tsx,json,css,scss,md}": "prettier --write"
   },
   "dependencies": {
+    "nanoid": "^5.1.5",
     "next": "15.3.3",
     "pdfjs-dist": "4.8.69",
     "react": "^19.0.0",
@@ -28,6 +29,7 @@
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
+    "autoprefixer": "^10.4.21",
     "eslint": "^9",
     "eslint-config-next": "15.3.3",
     "eslint-config-prettier": "^10.1.5",

@@ -160,7 +160,7 @@ const EtudeList: React.FC = () => {
     }, FADE_MS);
 
     return () => clearTimeout(t);
-  }, [currentKey, filteredEtudes]);
+  }, [currentKey, filteredEtudes, fade]);
 
   const isEmpty = displayedEtudes.length === 0;
 

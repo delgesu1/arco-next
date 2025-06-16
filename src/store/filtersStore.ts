@@ -34,7 +34,7 @@ interface FiltersState {
 
 export const useFiltersStore = create<FiltersState>()(
   persist(
-    (set, get) => ({
+    (set) => ({
       selectedTechniqueIds: [],
       selectedComposerIds: [],
       selectedVolumeIds: [], // NEW

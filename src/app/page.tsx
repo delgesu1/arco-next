@@ -1,6 +1,5 @@
 'use client';
 
-import Image from 'next/image';
 import EtudeList from '@/components/etudes/EtudeList'; // Import EtudeList
 
 import { useEffect } from 'react';

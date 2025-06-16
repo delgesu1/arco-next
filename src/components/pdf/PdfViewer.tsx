@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useRef, useMemo } from 'react';
+import { useState, useEffect, useRef, useMemo, useCallback } from 'react';
 import { Document, Page, pdfjs } from 'react-pdf';
 import 'react-pdf/dist/esm/Page/AnnotationLayer.css';
 import 'react-pdf/dist/esm/Page/TextLayer.css';
@@ -36,6 +36,54 @@ export default function PdfViewer({ pdfUrl, title }: PdfViewerProps) {
   );
   const containerRef = useRef<HTMLDivElement>(null);
   const controlsTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+
+  const goToPrevPage = useCallback(() => {
+    setPageNumber((prev) => Math.max(1, prev - 1));
+  }, []);
+
+  const goToNextPage = useCallback(() => {
+    setPageNumber((prev) => Math.min(numPages, prev + 1));
+  }, [numPages]);
+
+  const zoomIn = useCallback(() => {
+    setScale((prev) => Math.min(3.0, prev + 0.25));
+  }, []);
+
+  const zoomOut = useCallback(() => {
+    setScale((prev) => Math.max(0.25, prev - 0.25));
+  }, []);
+
+  const fitToWidth = useCallback(() => {
+    // Calculate optimal scale to fit page width
+    const optimalScale = containerWidth / PAGE_BASE_WIDTH; // Fit based on container
+    setScale(Math.max(0.5, Math.min(2.0, optimalScale)));
+  }, [containerWidth]);
+
+  const toggleFullscreen = useCallback(() => {
+    if (!document.fullscreenElement) {
+      containerRef.current?.requestFullscreen().then(() => {
+        setIsFullscreen(true);
+      });
+    } else {
+      document.exitFullscreen().then(() => {
+        setIsFullscreen(false);
+      });
+    }
+  }, []);
+
+  const onDocumentLoadSuccess = ({ numPages }: { numPages: number }) => {
+    setNumPages(numPages);
+    setLoading(false);
+    setError(null);
+    // Auto-fit to width on load
+    setTimeout(() => fitToWidth(), 100);
+  };
+
+  const onDocumentLoadError = (error: Error) => {
+    console.error('Error loading PDF:', error);
+    setError(`Failed to load PDF: ${error.message || 'Unknown error'}`);
+    setLoading(false);
+  };
 
   // Auto-hide controls after inactivity
   useEffect(() => {
@@ -144,55 +192,16 @@ export default function PdfViewer({ pdfUrl, title }: PdfViewerProps) {
 
     document.addEventListener('keydown', handleKeyDown);
     return () => document.removeEventListener('keydown', handleKeyDown);
-  }, [numPages, isFullscreen]);
-
-  const onDocumentLoadSuccess = ({ numPages }: { numPages: number }) => {
-    setNumPages(numPages);
-    setLoading(false);
-    setError(null);
-    // Auto-fit to width on load
-    setTimeout(() => fitToWidth(), 100);
-  };
-
-  const onDocumentLoadError = (error: Error) => {
-    console.error('Error loading PDF:', error);
-    setError(`Failed to load PDF: ${error.message || 'Unknown error'}`);
-    setLoading(false);
-  };
-
-  const goToPrevPage = () => {
-    setPageNumber((prev) => Math.max(1, prev - 1));
-  };
-
-  const goToNextPage = () => {
-    setPageNumber((prev) => Math.min(numPages, prev + 1));
-  };
-
-  const zoomIn = () => {
-    setScale((prev) => Math.min(3.0, prev + 0.25));
-  };
-
-  const zoomOut = () => {
-    setScale((prev) => Math.max(0.25, prev - 0.25));
-  };
-
-  const fitToWidth = () => {
-    // Calculate optimal scale to fit page width
-    const optimalScale = containerWidth / PAGE_BASE_WIDTH; // Fit based on container
-    setScale(Math.max(0.5, Math.min(2.0, optimalScale)));
-  };
-
-  const toggleFullscreen = () => {
-    if (!document.fullscreenElement) {
-      containerRef.current?.requestFullscreen().then(() => {
-        setIsFullscreen(true);
-      });
-    } else {
-      document.exitFullscreen().then(() => {
-        setIsFullscreen(false);
-      });
-    }
-  };
+  }, [
+    goToNextPage,
+    fitToWidth,
+    numPages,
+    isFullscreen,
+    goToPrevPage,
+    zoomIn,
+    zoomOut,
+    toggleFullscreen,
+  ]);
 
   return (
     <div

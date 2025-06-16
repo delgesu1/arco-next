@@ -1,8 +1,5 @@
 // /Volumes/M2 SSD/DEV/arco-next/src/data/etudesData.ts
-import {
-  allEtudes as importedEtudes,
-  volumes as importedVolumes,
-} from './legacyMockData';
+import { allEtudes as importedEtudes } from './legacyMockData';
 
 export interface Volume {
   id: string;

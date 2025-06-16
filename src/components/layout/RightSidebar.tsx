@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useRef } from 'react';
+import { useState, useRef } from 'react';
 import { useChatStore } from '@/store/chatStore';
 import type { ChatSession } from '@/store/chatStore';
 
@@ -148,7 +148,9 @@ export default function RightSidebar() {
             <div className="chat-history-list">
               {(() => {
                 // Helper function to generate consistent chat titles
-                const generateChatTitle = (messages: any[]): string => {
+                const generateChatTitle = (
+                  messages: { role: string; text: string }[]
+                ): string => {
                   const firstUserMessage = messages.find(
                     (m) => m.role === 'user'
                   );
@@ -312,7 +314,7 @@ export default function RightSidebar() {
                   <h3 className="ai-welcome-title">AI Practice Assistant</h3>
                   <p className="ai-welcome-text">
                     Ask questions about violin techniques, get practice advice,
-                    or describe what you'd like to work on.
+                    or describe what you&apos;d like to work on.
                   </p>
                 </div>
               )}
