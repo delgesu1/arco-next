@@ -304,19 +304,6 @@ rawComposerDatabase.forEach((name) => {
   }
 });
 
-// Helper to deterministically pick volume for a given composer
-const pickVolumeIdForComposer = (
-  composer: string,
-  indexSeed: number
-): string => {
-  const vols = volumes.filter((v) => v.composer === composer);
-  if (vols.length === 0) {
-    return slugify(`${composer} Collection`); // fallback
-  }
-  const idx = Math.abs(indexSeed) % vols.length;
-  return vols[idx].id;
-};
-
 /* ----------------------------------------------------------------
    REALISTIC MOCK ETUDE DATA (generated from the user-provided list)
    ----------------------------------------------------------------*/

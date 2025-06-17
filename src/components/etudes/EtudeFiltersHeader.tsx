@@ -26,7 +26,6 @@ const EtudeFiltersHeader: React.FC = () => {
     previewVolumeId,
     previewTechniqueId,
     previewComposerId,
-    isPreviewing,
   } = useFiltersStore();
 
   const activeTags = useMemo((): FilterTag[] => {
