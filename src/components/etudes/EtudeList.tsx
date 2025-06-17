@@ -2,6 +2,7 @@
 'use client'; // If we add interactivity like filtering/sorting later
 
 import EtudeCard from './EtudeCard';
+import EtudeFiltersHeader from './EtudeFiltersHeader';
 import { useState, useEffect, useRef } from 'react';
 import { useFiltersStore } from '@/store/filtersStore';
 import { etudes, Etude } from '@/data/etudesData';
@@ -59,40 +60,33 @@ const EtudeList: React.FC = () => {
       return true;
     });
 
-    // Determine criteria based on whether we're in preview mode
-    // Determine active technique filters
-    const isTechniquePreview = isPreviewing && !!previewTechniqueId;
-    const isVolumeOrComposerPreview =
-      isPreviewing && (!!previewVolumeId || !!previewComposerId);
+    // -------------------------------
+    // Determine active filters with additive hover preview logic
+    // -------------------------------
 
-    const activeTechniqueIds = isTechniquePreview
-      ? [previewTechniqueId!]
-      : isVolumeOrComposerPreview
-        ? [] // Ignore technique selections when previewing by composer or volume
-        : selectedTechniqueIds;
+    // Technique filters → combine permanent selections with hovered preview (if any)
+    const activeTechniqueIds = Array.from(
+      new Set([
+        ...selectedTechniqueIds,
+        ...(previewTechniqueId ? [previewTechniqueId] : []),
+      ])
+    );
 
-    const isVolumePreview = isPreviewing && !!previewVolumeId;
-    const isComposerPreview = isPreviewing && !!previewComposerId;
+    // Volume filter → permanent selection takes precedence, otherwise hovered preview
+    let volumeFilter: string | null =
+      selectedVolumeIds.length > 0
+        ? selectedVolumeIds[0]
+        : previewVolumeId || null;
 
-    let volumeFilter: string | null = null;
-    if (isVolumePreview) {
-      volumeFilter = previewVolumeId!;
-    } else if (selectedVolumeIds.length > 0) {
-      volumeFilter = selectedVolumeIds[0];
-    }
+    // Composer filter → if a composer is already selected, ignore hover previews of other composers
+    let composerFilter: string | null =
+      selectedComposerIds.length > 0
+        ? selectedComposerIds[0]
+        : previewComposerId || null;
 
-    let composerFilter: string | null = null;
-    if (isComposerPreview) {
-      composerFilter = previewComposerId!;
-    } else if (selectedComposerIds.length > 0) {
-      composerFilter = selectedComposerIds[0];
-    }
-
-    // If we're previewing a composer or just have a composer selection without an explicit volume preview/selection, ignore volume filter
-    if (
-      (isComposerPreview && !isVolumePreview) ||
-      (selectedComposerIds.length > 0 && selectedVolumeIds.length === 0)
-    ) {
+    // If a composer filter (selected or preview) is active but we don't have an explicit volume filter,
+    // ignore volume filter so that *all* of that composer's volumes are shown.
+    if (composerFilter && selectedVolumeIds.length === 0 && !previewVolumeId) {
       volumeFilter = null;
     }
 
@@ -168,6 +162,7 @@ const EtudeList: React.FC = () => {
     <div
       style={{ opacity: fade ? 0 : 1, transition: `opacity ${FADE_MS}ms ease` }}
     >
+      <EtudeFiltersHeader />
       {isEmpty ? (
         <div className="empty-state">
           <i

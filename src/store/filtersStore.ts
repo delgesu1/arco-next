@@ -129,6 +129,15 @@ export const useFiltersStore = create<FiltersState>()(
               return { hoveredTechniqueId: null };
             }
             // Mouse enter
+            // If 3 technique tags are already selected and the hovered tag is not one of them, ignore preview.
+            if (
+              state.selectedTechniqueIds.length >= 3 &&
+              !state.selectedTechniqueIds.includes(id)
+            ) {
+              return {
+                hoveredTechniqueId: id,
+              };
+            }
             return {
               hoveredTechniqueId: id,
               isPreviewing: true,
@@ -157,10 +166,18 @@ export const useFiltersStore = create<FiltersState>()(
               return { hoveredComposerId: null };
             }
             // Mouse enter
+            // If a composer or volume is already permanently selected, ignore hover previews for other composers.
+            if (
+              state.selectedComposerIds.length > 0 ||
+              state.selectedVolumeIds.length > 0
+            ) {
+              return { hoveredComposerId: composerId };
+            }
             return {
               isPreviewing: true,
               previewComposerId: composerId,
               previewVolumeId: null, // Clear volume preview when hovering a composer
+              previewTechniqueId: null, // Clear technique preview when hovering a composer
               hoveredComposerId: composerId,
               hoveredVolumeId: null, // Clear volume hover highlight
             };
@@ -189,10 +206,21 @@ export const useFiltersStore = create<FiltersState>()(
               return { hoveredVolumeId: null };
             }
             // Mouse enter
+            // If a composer or volume is already permanently selected, ignore hover previews for other volumes.
+            if (
+              state.selectedComposerIds.length > 0 ||
+              state.selectedVolumeIds.length > 0
+            ) {
+              return {
+                hoveredVolumeId: volumeId,
+                hoveredComposerId: parentComposerId || null,
+              };
+            }
             return {
               isPreviewing: true,
               previewVolumeId: volumeId,
               previewComposerId: parentComposerId || null,
+              previewTechniqueId: null, // Clear technique preview when hovering a volume
               hoveredVolumeId: volumeId,
               hoveredComposerId: parentComposerId || null, // Highlight parent composer as well
             };

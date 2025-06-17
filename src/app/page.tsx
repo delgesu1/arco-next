@@ -8,9 +8,16 @@ import { useFiltersActions } from '@/store/filtersStore';
 export default function Home() {
   const { clearAllSelections } = useFiltersActions();
 
-  // Clear any persisted selections on first load to ensure correct hover previews
+  // Clear persisted selections only on the FIRST load of a fresh browser session.
+  // We store a flag in sessionStorage so that navigating within the app (e.g., using the Back button)
+  // does NOT clear selections, preserving state between pages.
   useEffect(() => {
-    clearAllSelections();
+    if (typeof window === 'undefined') return;
+    const hasCleared = sessionStorage.getItem('filtersCleared') === 'true';
+    if (!hasCleared) {
+      clearAllSelections();
+      sessionStorage.setItem('filtersCleared', 'true');
+    }
   }, [clearAllSelections]);
   return (
     <>

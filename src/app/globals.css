@@ -1,6 +1,39 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* Global Scrollbar Styles for WebKit (Chrome, Safari, Edge) */
+html::-webkit-scrollbar {
+  width: 8px; /* Slightly wider for main scrollbar */
+  height: 8px;
+}
+
+html::-webkit-scrollbar-track {
+  background: transparent !important; /* Or a very subtle color like var(--md-sys-color-surface-container) */
+}
+
+html::-webkit-scrollbar-thumb {
+  background: var(
+    --md-sys-color-outline-variant
+  ) !important; /* Consistent with sidebar */
+  border-radius: 4px;
+  border: 2px solid transparent; /* Creates padding around thumb */
+  background-clip: content-box;
+}
+
+html::-webkit-scrollbar-thumb:hover {
+  background: var(
+    --md-sys-color-outline
+  ) !important; /* Consistent with sidebar */
+}
+
+/* For Firefox - not as customizable but good to have */
+html {
+  scrollbar-width: thin;
+  scrollbar-color: var(--md-sys-color-outline-variant) transparent; /* thumb track */
+}
+
+/* Ensure specific element scrollbars take precedence if needed by being more specific or using !important */
 /* Copied from /Volumes/M2 SSD/DEV/arco new interface/src/css/style.css */
 
 :root {
@@ -913,6 +946,7 @@ body {
   align-items: center;
   justify-content: center;
   overflow: hidden; /* Ensures content respects rounded corners */
+  position: relative;
   /* rounded-t-lg is applied via Tailwind to the div in EtudeCard.tsx */
 }
 
@@ -929,23 +963,37 @@ body {
 }
 
 .sheet-info {
-  padding: 1rem;
+  padding: 1.25rem 1rem 1rem 1rem;
   flex-grow: 1;
   display: flex;
   flex-direction: column;
+  gap: 0.5rem;
+  position: relative;
 }
 
 .sheet-title {
-  font-size: 1.1rem;
-  font-weight: 600;
+  font-size: 1.25rem;
+  font-weight: 700;
   color: var(--md-sys-color-on-surface);
-  margin-bottom: 0.25rem;
-  line-height: 1.3;
+  line-height: 1.2;
+  margin-bottom: 0.125rem;
+  letter-spacing: -0.01em;
 }
 
 .sheet-composer {
-  font-size: 0.9rem;
+  font-size: 1rem;
+  font-weight: 500;
+  color: var(--md-sys-color-primary);
+  line-height: 1.3;
+  margin-bottom: 0.25rem;
+}
+
+.sheet-volume {
+  font-size: 0.8rem;
+  font-weight: 400;
   color: var(--md-sys-color-on-surface-variant);
+  opacity: 0.8;
+  line-height: 1.3;
   margin-bottom: 0.75rem;
 }
 
@@ -966,26 +1014,26 @@ body {
 }
 
 .sheet-difficulty {
-  font-size: 0.75rem;
-  font-weight: 500;
-  padding: 0.25rem 0.6rem;
-  border-radius: 12px;
-  margin-left: auto; /* Aligns to the right if space allows */
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-width: 0 28px 28px 0;
+  z-index: 10;
 }
 
 .sheet-item[data-difficulty='Beginner'] .sheet-difficulty {
-  background-color: #dcfce7; /* Light Green */
-  color: #166534; /* Dark Green */
+  border-color: transparent rgba(34, 197, 94, 0.85) transparent transparent;
 }
 
 .sheet-item[data-difficulty='Intermediate'] .sheet-difficulty {
-  background-color: #fef9c3; /* Light Yellow */
-  color: #713f12; /* Dark Yellow */
+  border-color: transparent rgba(251, 146, 60, 0.85) transparent transparent;
 }
 
 .sheet-item[data-difficulty='Advanced'] .sheet-difficulty {
-  background-color: var(--md-sys-color-primary-container);
-  color: var(--md-sys-color-on-primary-container);
+  border-color: transparent rgba(239, 68, 68, 0.85) transparent transparent;
 }
 
 /* PDF Viewer Modal */
@@ -2849,7 +2897,7 @@ body {
 
 .etude-composer {
   font-size: 1.2rem;
-  color: var(--md-sys-color-on-surface-variant);
+  color: var(--md-sys-color-primary);
   margin-bottom: 1.5rem;
 }
 
@@ -3435,7 +3483,6 @@ body {
   background: var(--md-sys-color-surface-container);
   border-radius: 8px;
   padding: 16px 20px;
-  border: 1px solid var(--md-sys-color-outline-variant);
   animation: slideInUp 0.3s ease-out;
 }
 
@@ -3490,13 +3537,14 @@ body {
 .floating-composers .section-title {
   cursor: pointer;
   margin: 0;
-  padding: 1rem 1.5rem;
-  background: var(--md-sys-color-surface-container);
-  border-radius: 0;
+  padding: 1rem 1.5rem; /* Match section header padding exactly */
+  transition:
+    color 0.2s ease,
+    background-color 0.2s ease;
+  background: transparent;
   font-size: 1.1rem;
   font-weight: 600;
   color: var(--md-sys-color-on-surface);
-  transition: color 0.2s ease;
 }
 
 .floating-composers .section-title:hover {
@@ -3624,5 +3672,86 @@ body {
     right: 10px;
     width: auto;
     bottom: 10px;
+  }
+}
+
+/* Etude Filters Header */
+.etude-filters-header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem 0 1.5rem 0;
+  margin-bottom: 0.5rem;
+  border-bottom: 1px solid var(--md-sys-color-outline-variant);
+  flex-wrap: wrap;
+}
+
+.filters-label {
+  font-size: 0.875rem;
+  color: var(--md-sys-color-on-surface-variant);
+  font-weight: 500;
+  white-space: nowrap;
+  margin-right: 0.25rem;
+}
+
+.filter-tags {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.filter-tag {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.25rem 0.75rem;
+  border-radius: 1rem;
+  font-size: 0.75rem;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  border: 1px solid transparent;
+  white-space: nowrap;
+}
+
+.filter-tag-technique {
+  background: var(--md-sys-color-primary-container);
+  color: var(--md-sys-color-on-primary-container);
+  border-color: var(--md-sys-color-primary);
+}
+
+.filter-tag-composer {
+  background: var(--md-sys-color-secondary-container);
+  color: var(--md-sys-color-on-secondary-container);
+  border-color: var(--md-sys-color-secondary);
+}
+
+.filter-tag-volume {
+  background: var(--md-sys-color-surface-container-high);
+  color: var(--md-sys-color-on-secondary-container);
+  border-color: var(--md-sys-color-outline);
+}
+
+.filter-tag-search {
+  background: var(--md-sys-color-surface-container);
+  color: var(--md-sys-color-on-surface-variant);
+  border-color: var(--md-sys-color-outline-variant);
+  opacity: 0.8;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .etude-filters-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.75rem;
+    padding: 0.75rem 0 1rem 0;
+  }
+
+  .filters-label {
+    margin-right: 0;
+  }
+
+  .filter-tags {
+    width: 100%;
   }
 }

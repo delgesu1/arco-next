@@ -513,10 +513,194 @@ const generateAdditionalEtudes = (count: number): Etude[] => {
   return additionalEtudes;
 };
 
-const numberOfEtudesToGenerate = 100 - sampleEtudes.length;
-export const allEtudes: Etude[] = [
-  ...sampleEtudes,
-  ...generateAdditionalEtudes(
-    numberOfEtudesToGenerate > 0 ? numberOfEtudesToGenerate : 0
-  ),
+/* ----------------------------------------------------------------
+   REALISTIC MOCK ETUDE DATA (generated from the user-provided list)
+   ----------------------------------------------------------------*/
+
+interface RealVolumeSpec {
+  title: string;
+  numEtudes?: number;
+  etudeNamePrefix?: string;
+  etudes?: string[];
+}
+interface RealComposerSpec {
+  composer: string; // display name (matches sidebar)
+  volumes: RealVolumeSpec[];
+}
+
+const realisticCatalog: RealComposerSpec[] = [
+  {
+    composer: 'Kreutzer',
+    volumes: [
+      {
+        title: '42 Études ou Caprices',
+        numEtudes: 42,
+        etudeNamePrefix: 'Etude No.',
+      },
+    ],
+  },
+  {
+    composer: 'Rode',
+    volumes: [
+      {
+        title: "24 Caprices en Forme d'Études",
+        numEtudes: 24,
+        etudeNamePrefix: 'Caprice No.',
+      },
+      { title: '12 Études', numEtudes: 12, etudeNamePrefix: 'Etude No.' },
+    ],
+  },
+  {
+    composer: 'Dont',
+    volumes: [
+      {
+        title: '24 Études et Caprices, Op. 35',
+        numEtudes: 24,
+        etudeNamePrefix: 'Etude No.',
+      },
+      {
+        title: '24 Etudes, Op. 37',
+        numEtudes: 24,
+        etudeNamePrefix: 'Etude No.',
+      },
+    ],
+  },
+  {
+    composer: 'Fiorillo',
+    volumes: [
+      {
+        title: '36 Études ou Caprices',
+        numEtudes: 36,
+        etudeNamePrefix: 'Caprice No.',
+      },
+    ],
+  },
+  {
+    composer: 'Gaviniès',
+    volumes: [
+      { title: '24 Matinées', numEtudes: 24, etudeNamePrefix: 'Matinée No.' },
+    ],
+  },
+  {
+    composer: 'Mazas',
+    volumes: [
+      {
+        title: '30 Études Mélodiques et Progressives, Op. 36',
+        numEtudes: 30,
+        etudeNamePrefix: 'Etude No.',
+      },
+    ],
+  },
+  {
+    composer: 'Wieniawski',
+    volumes: [
+      {
+        title: "L'École Moderne, Op. 10",
+        etudes: [
+          'Etude-Caprice No. 1: Le Sautillé',
+          'Etude-Caprice No. 2: La Vélocité',
+          "Etude-Caprice No. 3: L'Étude", // note the special apostrophe
+          'Etude-Caprice No. 4: Le Staccato',
+          'Etude-Caprice No. 5: Alla Saltarella',
+          'Etude-Caprice No. 6: Prélude',
+          'Etude-Caprice No. 7: La Cadenza',
+          'Etude-Caprice No. 8: Le Chant du Bivouac',
+          'Etude-Caprice No. 9: Les Arpèges',
+          'Etude-Caprice No. 10: Exercice en Trilles',
+        ],
+      },
+    ],
+  },
+  {
+    composer: 'Paganini',
+    volumes: [
+      {
+        title: '24 Capricci per Violino Solo, Op. 1',
+        numEtudes: 24,
+        etudeNamePrefix: 'Caprice No.',
+      },
+    ],
+  },
 ];
+
+const difficultyPool: Etude['difficulty'][] = [
+  'Beginner',
+  'Intermediate',
+  'Advanced',
+];
+const techniqueIdPool = transformedTechniqueCategories.flatMap((cat) =>
+  cat.techniques.map((t) => t.id)
+);
+const defaultThumbnail = '/images/etudes/rode-01.png';
+const defaultPdf = '/pdfs/placeholder.pdf';
+
+const randomChoice = <T>(arr: T[]): T =>
+  arr[Math.floor(Math.random() * arr.length)];
+const randomSample = <T>(arr: T[], n: number): T[] => {
+  const copy = [...arr];
+  const res: T[] = [];
+  while (res.length < n && copy.length) {
+    res.push(copy.splice(Math.floor(Math.random() * copy.length), 1)[0]);
+  }
+  return res;
+};
+
+// Helper to ensure we have a Volume entry for each new volume title
+const ensureVolumeExists = (title: string, composer: string): string => {
+  const id = slugify(title);
+  if (!volumes.some((v) => v.id === id)) {
+    volumes.push({ id, name: title, composer, composerId: slugify(composer) });
+  }
+  return id;
+};
+
+const generateRealEtudes = (): Etude[] => {
+  let idCounter = 1;
+  const result: Etude[] = [];
+
+  realisticCatalog.forEach(({ composer, volumes: volSpecs }) => {
+    volSpecs.forEach((vs) => {
+      const volumeId = ensureVolumeExists(vs.title, composer);
+
+      const titles: string[] = [];
+      if (vs.etudes) {
+        titles.push(...vs.etudes);
+      } else if (vs.numEtudes && vs.etudeNamePrefix) {
+        for (let i = 1; i <= vs.numEtudes; i++) {
+          titles.push(`${vs.etudeNamePrefix} ${i}`);
+        }
+      }
+
+      titles.forEach((title) => {
+        result.push({
+          id: idCounter++,
+          title,
+          composer,
+          volumeId,
+          difficulty: randomChoice(difficultyPool),
+          techniques: randomSample(
+            techniqueIdPool,
+            Math.floor(Math.random() * 3) + 1
+          ),
+          description: '',
+          thumbnailUrl: defaultThumbnail,
+          pdfUrl: defaultPdf,
+        });
+      });
+    });
+  });
+  return result;
+};
+
+// remove any leftover volumes that are not in our realistic catalog
+const allowedVolumeIds = new Set<string>();
+realisticCatalog.forEach((rc) =>
+  rc.volumes.forEach((v) => allowedVolumeIds.add(slugify(v.title)))
+);
+for (let i = volumes.length - 1; i >= 0; i--) {
+  if (!allowedVolumeIds.has(volumes[i].id)) {
+    volumes.splice(i, 1);
+  }
+}
+
+export const allEtudes: Etude[] = generateRealEtudes();

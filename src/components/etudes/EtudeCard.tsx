@@ -67,16 +67,16 @@ const EtudeCard: React.FC<EtudeCardProps> = ({
             No Image
           </div>
         )}
+        {/* Difficulty triangle indicator */}
+        <div
+          className={`sheet-difficulty sheet-difficulty-${difficulty.toLowerCase()}`}
+          title={`Difficulty: ${difficulty}`}
+        />
       </div>
       <div className="sheet-info">
         <div className="sheet-title">{title}</div>
         <div className="sheet-composer">{composer}</div>
-        <div className="sheet-volume text-sm text-gray-600">{volumeName}</div>
-        <div
-          className={`sheet-difficulty sheet-difficulty-${difficulty.toLowerCase()}`}
-        >
-          {difficulty}
-        </div>
+        <div className="sheet-volume">{volumeName}</div>
       </div>
     </div>
   );
