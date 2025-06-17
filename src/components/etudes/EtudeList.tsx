@@ -208,7 +208,7 @@ const EtudeList: React.FC = () => {
     <div
       style={{ opacity: fade ? 0 : 1, transition: `opacity ${FADE_MS}ms ease` }}
     >
-      <EtudeFiltersHeader />
+      <EtudeFiltersHeader etudeCount={displayedEtudes.length} />
       {isEmpty ? (
         <div className="empty-state">
           <i

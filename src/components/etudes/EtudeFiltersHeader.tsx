@@ -15,7 +15,13 @@ interface FilterTag {
   category?: string;
 }
 
-const EtudeFiltersHeader: React.FC = () => {
+interface EtudeFiltersHeaderProps {
+  etudeCount: number;
+}
+
+const EtudeFiltersHeader: React.FC<EtudeFiltersHeaderProps> = ({
+  etudeCount,
+}) => {
   const {
     selectedTechniqueIds,
     selectedComposerIds,
@@ -163,7 +169,7 @@ const EtudeFiltersHeader: React.FC = () => {
 
   return (
     <div className="etude-filters-header">
-      <div className="filters-label">Showing etudes for:</div>
+      <div className="filters-label">Showing {etudeCount} etudes for:</div>
       <div className="filter-tags">
         {activeTags.map((tag) => (
           <div

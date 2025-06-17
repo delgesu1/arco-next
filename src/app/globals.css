@@ -919,7 +919,7 @@ body {
 /* Sheet Music Grid */
 .sheet-music-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
   gap: 1rem;
   padding: 1rem;
 }
@@ -1168,11 +1168,11 @@ body {
   background: var(--md-sys-color-primary-container);
   color: var(--md-sys-color-on-primary-container);
   transform: translateY(-1px);
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
 }
 
 .pdf-retry-btn:active {
   transform: translateY(0);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
 }
 
 .pdf-document-wrapper {
@@ -3754,10 +3754,4 @@ body {
   .filter-tags {
     width: 100%;
   }
-}
-
-.pdf-retry-btn:hover {
-  background: var(--md-sys-color-primary-container);
-  color: var(--md-sys-color-on-primary-container);
-  transform: translateY(-1px);
 }
