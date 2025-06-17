@@ -476,43 +476,6 @@ const deterministicPick = <T>(arr: T[], indexSeed: number): T => {
   return arr[idx];
 };
 
-const generateAdditionalEtudes = (count: number): Etude[] => {
-  const additionalEtudes: Etude[] = [];
-  const difficulties: Etude['difficulty'][] = [
-    'Beginner',
-    'Intermediate',
-    'Advanced',
-  ];
-  const allTechniqueNames = rawTechniqueDatabaseFlat.map((t) => t.name);
-  let currentId = sampleEtudes.length + 1;
-
-  for (let i = 0; i < count; i++) {
-    const composer = deterministicPick(rawComposerDatabase, i);
-    const difficulty = deterministicPick(difficulties, i);
-
-    // Pick 3 techniques in a deterministic, sliding-window fashion
-    const startIdx = (i * 3) % allTechniqueNames.length;
-    const etudeTechniques = allTechniqueNames
-      .slice(startIdx, startIdx + 3)
-      .map((name) => name);
-
-    const description = `An ${difficulty.toLowerCase()} etude by ${composer} focusing on ${etudeTechniques[0]} and ${etudeTechniques[1]}.`;
-
-    additionalEtudes.push({
-      volumeId: pickVolumeIdForComposer(composer, i),
-      id: currentId++,
-      title: `Etude No. ${currentId - 1}`,
-      composer,
-      difficulty,
-      techniques: etudeTechniques,
-      description,
-      thumbnailUrl: '/images/etudes/rode-01.png',
-      pdfUrl: '/etudepdfs/rode-01.pdf',
-    });
-  }
-  return additionalEtudes;
-};
-
 /* ----------------------------------------------------------------
    REALISTIC MOCK ETUDE DATA (generated from the user-provided list)
    ----------------------------------------------------------------*/

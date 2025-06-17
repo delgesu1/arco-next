@@ -7,7 +7,6 @@ import {
   composersWithVolumes,
   allVolumes,
 } from '@/data/sidebarData';
-import { slugify } from '@/utils/slugify';
 
 interface FilterTag {
   type: 'technique' | 'composer' | 'volume' | 'search';
@@ -168,7 +167,7 @@ const EtudeFiltersHeader: React.FC = () => {
     <div className="etude-filters-header">
       <div className="filters-label">Showing etudes for:</div>
       <div className="filter-tags">
-        {activeTags.map((tag, index) => (
+        {activeTags.map((tag) => (
           <div
             key={`${tag.type}-${tag.id}`}
             className={`filter-tag filter-tag-${tag.type}`}
