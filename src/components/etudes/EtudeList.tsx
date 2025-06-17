@@ -79,7 +79,7 @@ const EtudeList: React.FC = () => {
         : previewVolumeId || null;
 
     // Composer filter → if a composer is already selected, ignore hover previews of other composers
-    let composerFilter: string | null =
+    const composerFilter: string | null =
       selectedComposerIds.length > 0
         ? selectedComposerIds[0]
         : previewComposerId || null;

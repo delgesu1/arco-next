@@ -155,7 +155,6 @@ const EtudeFiltersHeader: React.FC = () => {
     previewVolumeId,
     previewTechniqueId,
     previewComposerId,
-    isPreviewing,
   ]);
 
   // Don't show header if no filters are active
