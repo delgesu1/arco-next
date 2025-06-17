@@ -89,6 +89,9 @@ export default function RightSidebar() {
   };
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
+    // Prevent any parent/global keydown listeners from hijacking the event
+    e.stopPropagation();
+
     if (e.key === 'Enter' && !e.shiftKey) {
       e.preventDefault();
       handleSubmit();
