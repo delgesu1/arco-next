@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useFiltersStore } from '../../store/filtersStore';
 // NEW: Import data from sidebarData.ts
 import {
@@ -12,6 +12,11 @@ export default function Sidebar() {
   const [isMinimized, setIsMinimized] = useState(false);
   const [hasMounted, setHasMounted] = useState(false);
   const [techniquesExpanded, setTechniquesExpanded] = useState(true);
+  const [showFloatingComposers, setShowFloatingComposers] = useState(false);
+
+  const composersSectionRef = useRef<HTMLDivElement>(null);
+  const sidebarAsideRef = useRef<HTMLElement>(null); // New ref for the <aside> element
+  const sidebarContentRef = useRef<HTMLDivElement>(null);
 
   const {
     selectedTechniqueIds,
@@ -41,8 +46,70 @@ export default function Sidebar() {
     setHasMounted(true);
   }, []);
 
+  // Scroll detection for floating composers preview
+  useEffect(() => {
+    const handleScroll = () => {
+      if (
+        !composersSectionRef.current ||
+        !sidebarAsideRef.current ||
+        isMinimized
+      ) {
+        return;
+      }
+
+      const sidebarAside = sidebarAsideRef.current; // Correctly assign sidebarAside
+      const composersSection = composersSectionRef.current;
+
+      const sidebarAsideRect = sidebarAside.getBoundingClientRect();
+      const composersRect = composersSection.getBoundingClientRect();
+
+      // Show floating preview if composers section is below the visible area
+      const floatingTitleHeight = 44; // Approximate height of the floating title
+      const floatingTitleTopEdge =
+        sidebarAsideRect.bottom - floatingTitleHeight;
+      const showFloating = composersRect.top > floatingTitleTopEdge;
+      setShowFloatingComposers(showFloating); // This line correctly sets the state based on new logic
+    };
+
+    const sidebarContent = sidebarContentRef.current;
+    if (sidebarContent) {
+      sidebarContent.addEventListener('scroll', handleScroll);
+      handleScroll(); // Initial check
+
+      return () => {
+        sidebarContent.removeEventListener('scroll', handleScroll);
+      };
+    }
+  }, [isMinimized, hasMounted]);
+
+  const scrollToComposers = () => {
+    if (composersSectionRef.current && sidebarContentRef.current) {
+      const sidebarContent = sidebarContentRef.current;
+      const composersSection = composersSectionRef.current;
+
+      const targetPosition = composersSection.offsetTop - 20; // 20px padding from top
+      sidebarContent.scrollTo({
+        top: targetPosition,
+        behavior: 'smooth',
+      });
+    }
+  };
+
   const toggleMinimize = () => {
     setIsMinimized(!isMinimized);
+  };
+
+  // Render floating composers preview
+  const renderFloatingComposersPreview = () => {
+    if (!showFloatingComposers || isMinimized) return null;
+
+    return (
+      <div className="floating-composers-title">
+        <h3 className="section-title" onClick={scrollToComposers}>
+          Composers
+        </h3>
+      </div>
+    );
   };
 
   return (
@@ -58,7 +125,7 @@ export default function Sidebar() {
         </button>
       ) : (
         /* Full sidebar */
-        <aside className="sidebar left-sidebar">
+        <aside ref={sidebarAsideRef} className="sidebar left-sidebar">
           <div className="sidebar-header">
             <h2 className="sidebar-title">Filters</h2>
             <button
@@ -69,7 +136,7 @@ export default function Sidebar() {
               <i className="fas fa-chevron-left"></i>
             </button>
           </div>
-          <div className="sidebar-content">
+          <div className="sidebar-content" ref={sidebarContentRef}>
             {hasMounted ? (
               <>
                 {/* Techniques Filter */}
@@ -127,7 +194,7 @@ export default function Sidebar() {
                 </div>
 
                 {/* Composers & Volumes Filter */}
-                <div className="filter-section">
+                <div className="filter-section" ref={composersSectionRef}>
                   <div className="section-header">
                     <h3 className="section-title">Composers</h3>
                   </div>
@@ -224,6 +291,9 @@ export default function Sidebar() {
               <div>Loading...</div>
             )}
           </div>
+
+          {/* Floating Composers Preview - positioned relative to sidebar container */}
+          {renderFloatingComposersPreview()}
         </aside>
       )}
     </>

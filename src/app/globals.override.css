@@ -1,0 +1,29 @@
+/* Overrides for floating composers sticky title */
+.floating-composers-title {
+  position: absolute !important;
+  bottom: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  width: 100% !important;
+  z-index: 5 !important;
+  background: #22262b !important; /* Match sidebar background */
+  border-top: 1px solid var(--md-sys-color-outline-variant) !important;
+  border-radius: 0 0 12px 12px !important; /* Match sidebar bottom corners */
+  padding: 0 !important;
+  margin: 0 !important;
+  animation: none !important;
+}
+
+.floating-composers-title .section-title {
+  cursor: pointer;
+  margin: 0;
+  padding: 0.75rem 1rem; /* Increased height by ~25% */
+  font-size: 1.25rem; /* Increased from 1rem to match 1.1rem + 15% */
+  font-weight: 600;
+  color: var(--md-sys-color-on-surface);
+  background: transparent;
+}
+
+.floating-composers-title .section-title:hover {
+  color: var(--md-sys-color-primary);
+}

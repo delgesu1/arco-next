@@ -1741,7 +1741,6 @@ body {
   .chat-history-modal-content {
     width: 95%;
     max-height: 80vh;
-    border-radius: 16px;
   }
 
   .chat-history-header {
@@ -2078,13 +2077,11 @@ body {
   border: none;
   color: var(--md-sys-color-on-primary);
   cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
   font-size: 1rem;
   font-weight: 600;
   z-index: 1000;
-  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   box-shadow:
     0 4px 12px rgba(0, 0, 0, 0.15),
     0 2px 4px rgba(0, 0, 0, 0.1);
@@ -2533,7 +2530,12 @@ body {
   font-family:
     -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   border: 1px solid rgba(255, 255, 255, 0.1);
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  transform: scale(0.95);
+  transition: transform 0.3s ease;
 }
 
 /* Fullscreen PDF Viewer */
@@ -3290,4 +3292,337 @@ body {
   transition: all 0.3s ease;
   user-select: none;
   pointer-events: none;
+}
+
+/* Floating Composers Preview */
+.floating-composers-preview {
+  position: fixed;
+  bottom: 20px;
+  left: 20px;
+  width: 280px;
+  z-index: 1000;
+  animation: slideInUp 0.3s ease-out;
+}
+
+@keyframes slideInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.floating-composers-content {
+  background: var(--md-sys-color-surface-container-high);
+  border: 1px solid var(--md-sys-color-outline);
+  border-radius: 16px;
+  padding: 16px;
+  box-shadow: var(--md-sys-elevation-4);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  backdrop-filter: blur(10px);
+}
+
+.floating-composers-content:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--md-sys-elevation-5);
+  border-color: var(--md-sys-color-primary);
+}
+
+.floating-composers-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+.floating-composers-header h4 {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--md-sys-color-on-surface);
+  margin: 0;
+}
+
+.composer-count {
+  font-size: 0.75rem;
+  color: var(--md-sys-color-on-surface-variant);
+  background: var(--md-sys-color-surface-variant);
+  padding: 2px 8px;
+  border-radius: 12px;
+}
+
+.floating-composers-list {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 12px;
+}
+
+.floating-composer-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 6px 10px;
+  background: var(--md-sys-color-surface-variant);
+  border-radius: 8px;
+  transition: all 0.15s ease;
+}
+
+.floating-composer-item:hover {
+  background: var(--md-sys-color-surface-container-highest);
+}
+
+.floating-composer-item.selected {
+  background: var(--md-sys-color-primary-container);
+  color: var(--md-sys-color-on-primary-container);
+}
+
+.floating-composer-item.more {
+  font-style: italic;
+  color: var(--md-sys-color-on-surface-variant);
+  justify-content: center;
+}
+
+.floating-composer-item .composer-name {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: inherit;
+}
+
+.floating-composer-item .composer-volumes {
+  font-size: 0.75rem;
+  color: var(--md-sys-color-on-surface-variant);
+  background: var(--md-sys-color-surface);
+  padding: 2px 6px;
+  border-radius: 8px;
+}
+
+.floating-composer-item.selected .composer-volumes {
+  background: var(--md-sys-color-primary);
+  color: var(--md-sys-color-on-primary);
+}
+
+.floating-composers-hint {
+  font-size: 0.75rem;
+  color: var(--md-sys-color-on-surface-variant);
+  text-align: center;
+  padding: 4px 0;
+  border-top: 1px solid var(--md-sys-color-outline-variant);
+  margin-top: 8px;
+  padding-top: 12px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .floating-composers-preview {
+    left: 10px;
+    right: 10px;
+    width: auto;
+    bottom: 10px;
+  }
+}
+
+/* Floating Composers Title */
+.floating-composers-title {
+  position: fixed;
+  bottom: 20px;
+  left: 20px;
+  width: 320px;
+  z-index: 1000;
+  background: var(--md-sys-color-surface-container);
+  border-radius: 8px;
+  padding: 16px 20px;
+  border: 1px solid var(--md-sys-color-outline-variant);
+  animation: slideInUp 0.3s ease-out;
+}
+
+.floating-composers-title .section-title {
+  cursor: pointer;
+  margin: 0;
+  transition: color 0.2s ease;
+  padding: 1rem 1.5rem;
+  background: var(--md-sys-color-surface-container);
+  border-radius: 0;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--md-sys-color-on-surface);
+}
+
+.floating-composers-title .section-title:hover {
+  color: var(--md-sys-color-primary);
+  background: var(--md-sys-color-surface-container-high);
+}
+
+@keyframes slideInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .floating-composers-title {
+    left: 10px;
+    right: 10px;
+    width: auto;
+    bottom: 10px;
+  }
+}
+
+/* Floating Composers */
+.floating-composers {
+  position: fixed;
+  bottom: 20px;
+  left: 20px;
+  width: 320px;
+  z-index: 1000;
+  animation: slideInUp 0.3s ease-out;
+}
+
+.floating-composers .section-title {
+  cursor: pointer;
+  margin: 0;
+  padding: 1rem 1.5rem;
+  background: var(--md-sys-color-surface-container);
+  border-radius: 0;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--md-sys-color-on-surface);
+  transition: color 0.2s ease;
+}
+
+.floating-composers .section-title:hover {
+  color: var(--md-sys-color-primary);
+  background: var(--md-sys-color-surface-container-high);
+}
+
+.floating-composers .section-content {
+  padding: 1rem;
+  background: var(--md-sys-color-surface-container);
+  border: 1px solid var(--md-sys-color-outline-variant);
+  border-radius: 12px;
+  box-shadow: var(--md-sys-elevation-4);
+  backdrop-filter: blur(10px);
+}
+
+.floating-composers .section-content .composer-list {
+  list-style: none;
+  padding-left: 0;
+  margin: 0;
+}
+
+.floating-composers .section-content .composer-item {
+  padding: 0.5rem;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.floating-composers .section-content .composer-item:hover {
+  background-color: var(--md-sys-color-surface-container-high);
+}
+
+.floating-composers .section-content .composer-item.selected {
+  background-color: var(--md-sys-color-primary-container);
+  color: var(--md-sys-color-on-primary-container);
+}
+
+.floating-composers .section-content .composer-item .composer-name {
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: inherit;
+}
+
+.floating-composers .section-content .composer-item .composer-volumes {
+  font-size: 0.75rem;
+  color: var(--md-sys-color-on-surface-variant);
+  background: var(--md-sys-color-surface);
+  padding: 2px 6px;
+  border-radius: 8px;
+}
+
+.floating-composers .section-content .composer-item.selected .composer-volumes {
+  background: var(--md-sys-color-primary);
+  color: var(--md-sys-color-on-primary);
+}
+
+@keyframes slideInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .floating-composers {
+    left: 10px;
+    right: 10px;
+    width: auto;
+    bottom: 10px;
+  }
+}
+
+/* Floating Composers Title */
+.floating-composers-title {
+  position: fixed;
+  bottom: 20px;
+  left: 20px;
+  width: 320px; /* Match exact sidebar width */
+  z-index: 1000;
+  background: var(
+    --md-sys-color-surface-container
+  ); /* Match sidebar background */
+  animation: slideInUp 0.3s ease-out;
+}
+
+.floating-composers-title .section-title {
+  cursor: pointer;
+  margin: 0;
+  padding: 1rem 1.5rem; /* Match section header padding exactly */
+  transition:
+    color 0.2s ease,
+    background-color 0.2s ease;
+  background: transparent;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--md-sys-color-on-surface);
+}
+
+.floating-composers-title .section-title:hover {
+  color: var(--md-sys-color-primary);
+  background: var(--md-sys-color-surface-container-high);
+}
+
+@keyframes slideInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .floating-composers-title {
+    left: 10px;
+    right: 10px;
+    width: auto;
+    bottom: 10px;
+  }
 }
