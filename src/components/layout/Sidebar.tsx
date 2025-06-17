@@ -24,6 +24,7 @@ export default function Sidebar() {
     selectedVolumeIds,
     searchTechniqueIds,
     searchComposerIds,
+    searchVolumeIds,
     actions,
   } = useFiltersStore();
 
@@ -100,7 +101,14 @@ export default function Sidebar() {
   };
 
   // Render floating composers preview
+  // Hide floating composers title when search filters are active
+  const isSearchActive =
+    searchTechniqueIds.length > 0 ||
+    searchComposerIds.length > 0 ||
+    searchVolumeIds.length > 0;
+
   const renderFloatingComposersPreview = () => {
+    if (isSearchActive) return null; // do not show in filtered search view
     if (!showFloatingComposers || isMinimized) return null;
 
     return (
