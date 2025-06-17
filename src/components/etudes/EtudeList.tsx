@@ -90,7 +90,7 @@ const EtudeList: React.FC = () => {
       volumeFilter = null;
     }
 
-    return baseEtudes.filter((etude) => {
+    const strictFiltered = baseEtudes.filter((etude) => {
       // Volume match
       if (volumeFilter && etude.volumeId !== volumeFilter) {
         return false;
@@ -109,6 +109,52 @@ const EtudeList: React.FC = () => {
       }
       return true;
     });
+
+    // --------------------------------------------------
+    // Fallback: if strictFiltered is empty but we do have
+    // search-based filters, show the UNION of all etudes
+    // that match *any* of those search tags (no duplicates).
+    // --------------------------------------------------
+    if (
+      strictFiltered.length === 0 &&
+      (searchTechniqueIds.length > 0 ||
+        searchComposerIds.length > 0 ||
+        searchVolumeIds.length > 0)
+    ) {
+      const unionMap = new Map<string | number, Etude>();
+
+      // Technique matches
+      if (searchTechniqueIds.length > 0) {
+        etudes.forEach((et) => {
+          const techIds = et.techniques.map((t) => slugify(t));
+          if (techIds.some((id) => searchTechniqueIds.includes(id))) {
+            unionMap.set(et.id, et);
+          }
+        });
+      }
+
+      // Composer matches
+      if (searchComposerIds.length > 0) {
+        etudes.forEach((et) => {
+          if (searchComposerIds.includes(slugify(et.composer))) {
+            unionMap.set(et.id, et);
+          }
+        });
+      }
+
+      // Volume matches
+      if (searchVolumeIds.length > 0) {
+        etudes.forEach((et) => {
+          if (searchVolumeIds.includes(et.volumeId)) {
+            unionMap.set(et.id, et);
+          }
+        });
+      }
+
+      return Array.from(unionMap.values());
+    }
+
+    return strictFiltered;
   }, [
     searchTechniqueIds,
     searchComposerIds,
